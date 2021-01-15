@@ -60,6 +60,8 @@ public class ProcessingRecipeJS extends RecipeJS
 				inputItems.add(parseIngredientItem(o));
 			}
 		}
+
+		json.addProperty("processingTime", 100);
 	}
 
 	@Override
