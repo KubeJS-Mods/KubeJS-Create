@@ -18,7 +18,7 @@ apply plugin: 'maven'
 apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
 
 def ENV = System.getenv()
-version = ENV.BUILD_NUMBER ? "${mod_version}.${ENV.BUILD_NUMBER}" : "${mod_version}.0"
+version = "${mod_version}-build.${ENV.BUILD_NUMBER ?: 9999}"
 group = project.mod_package
 archivesBaseName = project.mod_name
 
