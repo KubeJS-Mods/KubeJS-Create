@@ -1,7 +1,11 @@
 package dev.latvian.kubejs.create;
 
+import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
+import com.simibubi.create.foundation.utility.Lang;
 import dev.latvian.kubejs.recipe.RegisterRecipeHandlersEvent;
 import dev.latvian.kubejs.recipe.minecraft.ShapedRecipeJS;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -17,19 +21,15 @@ public class KubeJSCreate
 	@SubscribeEvent
 	public static void registerRecipeHandlers(RegisterRecipeHandlersEvent event)
 	{
-		event.ignore("create:blockzapper_upgrade");
-		event.register("create:mechanical_crafting", ShapedRecipeJS::new);
-		event.register("create:conversion", ProcessingRecipeJS::new);
-		event.register("create:crushing", ProcessingRecipeJS::new);
-		event.register("create:cutting", ProcessingRecipeJS::new);
-		event.register("create:milling", ProcessingRecipeJS::new);
-		event.register("create:basin", ProcessingRecipeJS::new);
-		event.register("create:mixing", ProcessingRecipeJS::new);
-		event.register("create:compacting", ProcessingRecipeJS::new);
-		event.register("create:pressing", ProcessingRecipeJS::new);
-		event.register("create:sandpaper_polishing", ProcessingRecipeJS::new);
-		event.register("create:splashing", ProcessingRecipeJS::new);
-		event.register("create:filling", ProcessingRecipeJS::new);
-		event.register("create:emptying", ProcessingRecipeJS::new);
+		event.ignore(new ResourceLocation("create:blockzapper_upgrade"));
+		event.register(new ResourceLocation("create:mechanical_crafting"), ShapedRecipeJS::new);
+
+		for (AllRecipeTypes type : AllRecipeTypes.values())
+		{
+			if (type.supplier.get() instanceof ProcessingRecipeSerializer)
+			{
+				event.register(new ResourceLocation("create", Lang.asId(type.name())), ProcessingRecipeJS::new);
+			}
+		}
 	}
 }

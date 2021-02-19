@@ -126,7 +126,10 @@ public class ProcessingRecipeJS extends RecipeJS
 
 		for (IngredientJS in : inputItems)
 		{
-			jsonIngredients.add(in.toJson());
+			for (IngredientJS in1 : in.unwrapStackIngredient())
+			{
+				jsonIngredients.add(in1.toJson());
+			}
 		}
 
 		for (FluidIngredient fs : inputFluids)
