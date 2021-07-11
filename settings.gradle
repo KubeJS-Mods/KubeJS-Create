@@ -1,1 +1,9 @@
-rootProject.name = 'KubeJS-Create-1.16.4'
+pluginManagement {
+	repositories {
+		maven { url "https://maven.creeperhost.net/" }
+		maven { url "https://maven.shedaniel.me/" }
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'KubeJS-Create-1.16.5'
