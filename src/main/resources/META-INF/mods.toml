@@ -5,7 +5,7 @@ license = "GNU LGPLv3"
 
 [[mods]]
 modId = "kubejs_create"
-version = "${file.jarVersion}"
+version = "${version}"
 displayName = "KubeJS Create"
 authors = "LatvianModder"
 description = '''
@@ -16,7 +16,7 @@ license = "GNU LGPLv3"
 [[dependencies.kubejs_create]]
 modId = "kubejs"
 mandatory = true
-versionRange = "[1604,)"
+versionRange = "[1605.3.13-build.43,)"
 ordering = "AFTER"
 side = "BOTH"
 

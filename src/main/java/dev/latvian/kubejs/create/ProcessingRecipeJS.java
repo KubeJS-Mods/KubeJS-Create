@@ -11,8 +11,7 @@ import dev.latvian.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.kubejs.recipe.RecipeJS;
 import dev.latvian.kubejs.util.ListJS;
 import dev.latvian.kubejs.util.MapJS;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.JSONUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -21,42 +20,30 @@ import java.util.List;
 /**
  * @author LatvianModder
  */
-public class ProcessingRecipeJS extends RecipeJS
-{
+public class ProcessingRecipeJS extends RecipeJS {
 	public final List<FluidIngredient> inputFluids = new ArrayList<>();
 	public final List<FluidStack> outputFluids = new ArrayList<>();
 
 	@Override
-	public void create(ListJS args)
-	{
-		for (Object o : ListJS.orSelf(args.get(0)))
-		{
-			if (o instanceof FluidStackJS)
-			{
-				CompoundNBT nbt = new CompoundNBT();
+	public void create(ListJS args) {
+		for (Object o : ListJS.orSelf(args.get(0))) {
+			if (o instanceof FluidStackJS) {
+				CompoundTag nbt = new CompoundTag();
 				((FluidStackJS) o).getFluidStack().write(nbt);
 				outputFluids.add(FluidStack.loadFluidStackFromNBT(nbt));
-			}
-			else
-			{
+			} else {
 				outputItems.add(parseResultItem(o));
 			}
 		}
 
-		for (Object o : ListJS.orSelf(args.get(1)))
-		{
-			if (o instanceof FluidStackJS)
-			{
-				CompoundNBT nbt = new CompoundNBT();
+		for (Object o : ListJS.orSelf(args.get(1))) {
+			if (o instanceof FluidStackJS) {
+				CompoundTag nbt = new CompoundTag();
 				((FluidStackJS) o).getFluidStack().write(nbt);
 				inputFluids.add(FluidIngredient.fromFluidStack(FluidStack.loadFluidStackFromNBT(nbt)));
-			}
-			else if (o instanceof MapJS && (((MapJS) o).containsKey("fluid") || ((MapJS) o).containsKey("fluidTag")))
-			{
+			} else if (o instanceof MapJS && (((MapJS) o).containsKey("fluid") || ((MapJS) o).containsKey("fluidTag"))) {
 				inputFluids.add(FluidIngredient.deserialize(((MapJS) o).toJson()));
-			}
-			else
-			{
+			} else {
 				inputItems.add(parseIngredientItem(o));
 			}
 		}
@@ -65,85 +52,66 @@ public class ProcessingRecipeJS extends RecipeJS
 	}
 
 	@Override
-	public void deserialize()
-	{
-		for (JsonElement e : JSONUtils.getJsonArray(json, "ingredients"))
-		{
-			if (FluidIngredient.isFluidIngredient(e))
-			{
+	public void deserialize() {
+		for (JsonElement e : json.get("ingredients").getAsJsonArray()) {
+			if (FluidIngredient.isFluidIngredient(e)) {
 				inputFluids.add(FluidIngredient.deserialize(e));
-			}
-			else
-			{
+			} else {
 				inputItems.add(parseIngredientItem(e));
 			}
 		}
 
-		for (JsonElement e : JSONUtils.getJsonArray(json, "results"))
-		{
+		for (JsonElement e : json.get("results").getAsJsonArray()) {
 			JsonObject jsonObject = e.getAsJsonObject();
 
-			if (JSONUtils.hasField(jsonObject, "fluid"))
-			{
+			if (jsonObject.has("fluid")) {
 				outputFluids.add(FluidHelper.deserializeFluidStack(jsonObject));
-			}
-			else
-			{
+			} else {
 				outputItems.add(parseResultItem(e));
 			}
 		}
 	}
 
-	public ProcessingRecipeJS processingTime(int t)
-	{
+	public ProcessingRecipeJS processingTime(int t) {
 		json.addProperty("processingTime", t);
 		save();
 		return this;
 	}
 
-	public ProcessingRecipeJS heatRequirement(String req)
-	{
+	public ProcessingRecipeJS heatRequirement(String req) {
 		json.addProperty("heatRequirement", req);
 		save();
 		return this;
 	}
 
-	public ProcessingRecipeJS heated()
-	{
+	public ProcessingRecipeJS heated() {
 		return heatRequirement("heated");
 	}
 
-	public ProcessingRecipeJS superheated()
-	{
+	public ProcessingRecipeJS superheated() {
 		return heatRequirement("superheated");
 	}
 
 	@Override
-	public void serialize()
-	{
+	public void serialize() {
 		JsonArray jsonIngredients = new JsonArray();
 		JsonArray jsonOutputs = new JsonArray();
 
-		for (IngredientJS in : inputItems)
-		{
-			for (IngredientJS in1 : in.unwrapStackIngredient())
-			{
+		for (IngredientJS in : inputItems) {
+			for (IngredientJS in1 : in.unwrapStackIngredient()) {
 				jsonIngredients.add(in1.toJson());
 			}
 		}
 
-		for (FluidIngredient fs : inputFluids)
-		{
+		for (FluidIngredient fs : inputFluids) {
 			jsonIngredients.add(fs.serialize());
 		}
 
-		for (ItemStackJS is : outputItems)
-		{
+		for (ItemStackJS is : outputItems) {
 			jsonOutputs.add(is.toResultJson());
 		}
 
-		for (FluidStack fs : outputFluids)
-		{
+		for (FluidStack fs : outputFluids) {
 			jsonOutputs.add(FluidHelper.serializeFluidStack(fs));
 		}
 
