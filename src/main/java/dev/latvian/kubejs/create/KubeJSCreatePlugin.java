@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 public class KubeJSCreatePlugin extends KubeJSPlugin {
 	@Override
 	public void addRecipes(RegisterRecipeHandlersEvent event) {
-		event.ignore(new ResourceLocation("create:sequenced_assembly"));
+		event.register(new ResourceLocation("create:sequenced_assembly"), SequencedAssemblyRecipeJS::new);
 		event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
 
 		for (AllRecipeTypes type : AllRecipeTypes.values()) {
