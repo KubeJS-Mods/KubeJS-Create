@@ -16,8 +16,8 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 		event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
 
 		for (AllRecipeTypes type : AllRecipeTypes.values()) {
-			if (type.serializer instanceof ProcessingRecipeSerializer) {
-				event.register(type.serializer.getRegistryName(), ProcessingRecipeJS::new);
+			if (type.getSerializer() instanceof ProcessingRecipeSerializer) {
+				event.register(type.getSerializer().getRegistryName(), ProcessingRecipeJS::new);
 			}
 		}
 	}
