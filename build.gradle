@@ -121,12 +121,6 @@ publishing {
 	}
 
 	repositories {
-		if (ENV.LOCAL_MAVEN) {
-			maven {
-				url = "file://${ENV.LOCAL_MAVEN}"
-			}
-		}
-
 		if (ENV.SAPS_TOKEN) {
 			maven {
 				url "https://maven.saps.dev/minecraft"
