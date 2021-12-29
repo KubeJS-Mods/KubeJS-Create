@@ -1,13 +1,13 @@
-package dev.latvian.kubejs.create;
+package dev.latvian.mods.kubejs.create;
 
 import com.google.gson.JsonArray;
 import com.simibubi.create.content.contraptions.itemAssembly.IAssemblyRecipe;
 import com.simibubi.create.content.contraptions.itemAssembly.SequencedRecipe;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipe;
-import dev.latvian.kubejs.item.ItemStackJS;
-import dev.latvian.kubejs.recipe.RecipeExceptionJS;
-import dev.latvian.kubejs.recipe.RecipeJS;
-import dev.latvian.kubejs.util.ListJS;
+import dev.latvian.mods.kubejs.item.ItemStackJS;
+import dev.latvian.mods.kubejs.recipe.RecipeExceptionJS;
+import dev.latvian.mods.kubejs.recipe.RecipeJS;
+import dev.latvian.mods.kubejs.util.ListJS;
 import net.minecraft.world.item.crafting.Recipe;
 
 public class SequencedAssemblyRecipeJS extends RecipeJS {
@@ -18,17 +18,17 @@ public class SequencedAssemblyRecipeJS extends RecipeJS {
 		json.add("transitionalItem", ItemStackJS.of("create:precision_mechanism").toResultJson());
 		json.addProperty("loops", 4);
 
-		JsonArray sequence = new JsonArray();
+		var sequence = new JsonArray();
 
-		for (Object o : ListJS.orSelf(args.get(2))) {
-			if (o instanceof RecipeJS) {
-				((RecipeJS) o).dontAdd();
+		for (var step : ListJS.orSelf(args.get(2))) {
+			if (step instanceof RecipeJS recipeJS) {
+				recipeJS.dontAdd();
 
 				try {
-					Recipe<?> r = ((RecipeJS) o).createRecipe();
+					var recipe = recipeJS.createRecipe();
 
-					if (r instanceof IAssemblyRecipe && r instanceof ProcessingRecipe && ((IAssemblyRecipe) r).supportsAssembly()) {
-						sequence.add(new SequencedRecipe<>((ProcessingRecipe<?>) r).toJson());
+					if (recipe instanceof IAssemblyRecipe ass && recipe instanceof ProcessingRecipe proc && ass.supportsAssembly()) {
+						sequence.add(new SequencedRecipe<>(proc).toJson());
 					} else {
 						throw new RecipeExceptionJS("Sequence recipe must be an assembly recipe!");
 					}
@@ -36,7 +36,7 @@ public class SequencedAssemblyRecipeJS extends RecipeJS {
 					throw new RecipeExceptionJS("Failed to create " + ex);
 				}
 			} else {
-				throw new RecipeExceptionJS("Object must be a recipe, instead got " + o + " / " + o.getClass().getName());
+				throw new RecipeExceptionJS("Object must be a recipe, instead got " + step + " / " + step.getClass().getName());
 			}
 		}
 
@@ -64,13 +64,13 @@ public class SequencedAssemblyRecipeJS extends RecipeJS {
 	@Override
 	public void serialize() {
 		if (serializeOutputs) {
-			JsonArray array = new JsonArray();
+			var results = new JsonArray();
 
-			for (ItemStackJS out : outputItems) {
-				array.add(out.toResultJson());
+			for (var out : outputItems) {
+				results.add(out.toResultJson());
 			}
 
-			json.add("results", array);
+			json.add("results", results);
 		}
 
 		if (serializeInputs) {

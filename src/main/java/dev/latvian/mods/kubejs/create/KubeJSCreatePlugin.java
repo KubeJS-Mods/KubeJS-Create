@@ -1,10 +1,10 @@
-package dev.latvian.kubejs.create;
+package dev.latvian.mods.kubejs.create;
 
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
-import dev.latvian.kubejs.KubeJSPlugin;
-import dev.latvian.kubejs.item.custom.ItemTypes;
-import dev.latvian.kubejs.recipe.RegisterRecipeHandlersEvent;
+import dev.latvian.mods.kubejs.KubeJSPlugin;
+import dev.latvian.mods.kubejs.item.type.ItemTypes;
+import dev.latvian.mods.kubejs.recipe.RegisterRecipeHandlersEvent;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -21,9 +21,9 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 		event.register(new ResourceLocation("create:sequenced_assembly"), SequencedAssemblyRecipeJS::new);
 		event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
 
-		for (AllRecipeTypes type : AllRecipeTypes.values()) {
-			if (type.getSerializer() instanceof ProcessingRecipeSerializer) {
-				event.register(type.getSerializer().getRegistryName(), ProcessingRecipeJS::new);
+		for (var createRecipeType : AllRecipeTypes.values()) {
+			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer) {
+				event.register(createRecipeType.getSerializer().getRegistryName(), ProcessingRecipeJS::new);
 			}
 		}
 	}

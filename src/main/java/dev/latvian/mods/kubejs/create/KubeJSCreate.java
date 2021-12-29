@@ -1,4 +1,4 @@
-package dev.latvian.kubejs.create;
+package dev.latvian.mods.kubejs.create;
 
 import net.minecraftforge.fml.common.Mod;
 

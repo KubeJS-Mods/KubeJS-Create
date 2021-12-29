@@ -6,7 +6,7 @@ plugins {
 
 apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 def ENV = System.getenv()
 version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
@@ -36,7 +36,7 @@ repositories {
 	maven {
 		url "https://maven.architectury.dev/"
 		content {
-			includeGroup "me.shedaniel"
+			includeGroup "dev.architectury"
 		}
 	}
 
@@ -64,7 +64,7 @@ dependencies {
 
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
 	modApi "com.simibubi.create:Create:${rootProject.create_version}"
-	modApi "com.jozufozu.flywheel:Flywheel:${rootProject.flywheel_version}"
+	modApi "com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_version}"
 }
 
 processResources {
@@ -75,12 +75,8 @@ processResources {
 	}
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		it.options.release = targetVersion
-	}
+compileJava {
+	options.encoding = "UTF-8"
 }
 
 java {
@@ -138,7 +134,7 @@ if (ENV.CURSEFORGE_KEY) {
 			id = project.curseforge_id
 			releaseType = project.curseforge_type
 			addGameVersion "Forge"
-			addGameVersion "1.16.5"
+			addGameVersion "1.18.1"
 			mainArtifact(remapJar.archivePath)
 			relations {
 				requiredDependency 'kubejs-forge'

@@ -1,1 +1,1 @@
-dev.latvian.kubejs.create.KubeJSCreatePlugin
+dev.latvian.mods.kubejs.create.KubeJSCreatePlugin
