@@ -3,7 +3,7 @@ package dev.latvian.mods.kubejs.create;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
-import dev.latvian.mods.kubejs.item.type.ItemTypes;
+import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.recipe.RegisterRecipeHandlersEvent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 public class KubeJSCreatePlugin extends KubeJSPlugin {
 	@Override
 	public void init() {
-		ItemTypes.register(new SequencedAssemblyItemType("create:sequenced_assembly"));
+		RegistryObjectBuilderTypes.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
 	}
 
 	@Override

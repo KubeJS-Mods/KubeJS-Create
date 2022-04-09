@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[32,)"
+loaderVersion = "[40,)"
 issueTrackerURL = "https://github.com/KubeJS-Mods/KubeJS-Create/issues"
 license = "GNU LGPLv3"
 
@@ -16,7 +16,7 @@ license = "GNU LGPLv3"
 [[dependencies.kubejs_create]]
 modId = "kubejs"
 mandatory = true
-versionRange = "[1605.3.13-build.49,)"
+versionRange = "[1802.5.1-build.331,)"
 ordering = "AFTER"
 side = "BOTH"
 

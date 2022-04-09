@@ -1,5 +1,5 @@
 plugins {
-	id "dev.architectury.loom" version "0.10.0-SNAPSHOT"
+	id "dev.architectury.loom" version "0.11.0-SNAPSHOT"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
 	id 'maven-publish'
 }
@@ -59,7 +59,7 @@ repositories {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings minecraft.officialMojangMappings()
+	mappings loom.officialMojangMappings()
 	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"

@@ -6,4 +6,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'KubeJS-Create-1.16.5'
+rootProject.name = 'KubeJS-Create-1.18.2'
