@@ -3,6 +3,7 @@ package dev.latvian.mods.kubejs.create;
 import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.foundation.utility.Pair;
+import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.event.EventJS;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
@@ -36,7 +37,7 @@ public class SpecialSpoutHandlerEvent extends EventJS {
 			public int fillBlock(Level world, BlockPos pos, SpoutTileEntity spout, FluidStack availableFluid, boolean simulate) {
 				if (!block.test(world.getBlockState(pos)))
 					return 0;
-				return handler.fillBlock(new BlockContainerJS(world, pos), FluidStackJS.of(availableFluid), simulate);
+				return handler.fillBlock(new BlockContainerJS(world, pos), FluidStackJS.of(FluidStackHooksForge.fromForge(availableFluid)), simulate);
 			}
 		}));
 	}
