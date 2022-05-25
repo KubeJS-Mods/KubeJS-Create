@@ -1,14 +1,12 @@
 package dev.latvian.mods.kubejs.create;
 
 import com.google.gson.JsonArray;
-import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
+import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.util.ListJS;
 import dev.latvian.mods.kubejs.util.MapJS;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +16,13 @@ import java.util.List;
  */
 public class ProcessingRecipeJS extends RecipeJS {
 	public final List<FluidIngredient> inputFluids = new ArrayList<>();
-	public final List<FluidStack> outputFluids = new ArrayList<>();
+	public final List<FluidStackJS> outputFluids = new ArrayList<>();
 
 	@Override
 	public void create(ListJS args) {
 		for (var result : ListJS.orSelf(args.get(0))) {
 			if (result instanceof FluidStackJS fluid) {
-				outputFluids.add(FluidStackHooksForge.toForge(fluid.getFluidStack()));
+				outputFluids.add(fluid);
 			} else {
 				outputItems.add(parseResultItem(result));
 			}
@@ -32,7 +30,7 @@ public class ProcessingRecipeJS extends RecipeJS {
 
 		for (var input : ListJS.orSelf(args.get(1))) {
 			if (input instanceof FluidStackJS fluid) {
-				inputFluids.add(FluidIngredient.fromFluidStack(FluidStackHooksForge.toForge(fluid.getFluidStack())));
+				inputFluids.add(FluidIngredientHelper.toFluidIngredient(fluid));
 			} else if (input instanceof MapJS map && (map.containsKey("fluid") || map.containsKey("fluidTag"))) {
 				inputFluids.add(FluidIngredient.deserialize(map.toJson()));
 			} else {
@@ -57,7 +55,7 @@ public class ProcessingRecipeJS extends RecipeJS {
 			var resultJson = result.getAsJsonObject();
 
 			if (resultJson.has("fluid")) {
-				outputFluids.add(FluidHelper.deserializeFluidStack(resultJson));
+				outputFluids.add(FluidStackJS.fromJson(resultJson.get("fluid")));
 			} else {
 				outputItems.add(parseResultItem(result));
 			}
@@ -104,7 +102,7 @@ public class ProcessingRecipeJS extends RecipeJS {
 		}
 
 		for (var fluid : outputFluids) {
-			jsonOutputs.add(FluidHelper.serializeFluidStack(fluid));
+			jsonOutputs.add(fluid.toJson());
 		}
 
 		json.add("ingredients", jsonIngredients);
