@@ -23,7 +23,7 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 
 		for (var createRecipeType : AllRecipeTypes.values()) {
 			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer) {
-				event.register(createRecipeType.getSerializer().getRegistryName(), ProcessingRecipeJS::new);
+				event.register(createRecipeType.getId(), ProcessingRecipeJS::new);
 			}
 		}
 	}
