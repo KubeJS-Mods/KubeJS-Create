@@ -38,7 +38,7 @@ dependencies {
 
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
 	modApi "com.simibubi.create:Create:${rootProject.create_version}"
-	modApi "com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_version}"
+	modApi "com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_forge_version}"
 
 	modLocalRuntime modCompileOnly("me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}")
 

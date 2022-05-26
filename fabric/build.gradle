@@ -78,7 +78,6 @@ dependencies {
 
 	modApi "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
 	modApi "com.simibubi:Create:${rootProject.create_version}"
-	modApi "com.jozufozu.flywheel:Flywheel-Fabric:${rootProject.flywheel_version}"
 
 	modLocalRuntime modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}")
 

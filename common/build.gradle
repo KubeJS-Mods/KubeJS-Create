@@ -25,9 +25,6 @@ dependencies {
 	modApi ("com.simibubi:Create:${rootProject.create_version}") {
 		transitive = false
 	}
-	modApi ("com.jozufozu.flywheel:Flywheel-Fabric:${rootProject.flywheel_version}") {
-		transitive = false
-	}
 }
 
 def ENV = System.getenv()
