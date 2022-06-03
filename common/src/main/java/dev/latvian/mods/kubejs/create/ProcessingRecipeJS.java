@@ -55,7 +55,7 @@ public class ProcessingRecipeJS extends RecipeJS {
 			var resultJson = result.getAsJsonObject();
 
 			if (resultJson.has("fluid")) {
-				outputFluids.add(FluidStackJS.fromJson(resultJson.get("fluid")));
+				outputFluids.add(FluidStackJS.fromJson(resultJson));
 			} else {
 				outputItems.add(parseResultItem(result));
 			}
