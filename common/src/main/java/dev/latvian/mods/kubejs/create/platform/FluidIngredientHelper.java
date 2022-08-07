@@ -9,7 +9,7 @@ import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 
 import java.util.function.BiConsumer;
 
-import static dev.latvian.mods.kubejs.create.SpecialSpoutHandlerEvent.SpoutHandler;
+import static dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent.SpoutHandler;
 
 public class FluidIngredientHelper {
 
@@ -19,7 +19,6 @@ public class FluidIngredientHelper {
 	}
 
 	@ExpectPlatform
-
 	public static OpenEndedPipe.IEffectHandler createEffectHandler(FluidIngredient fluidIngredient, BiConsumer<OpenEndedPipe, FluidStackJS> handler) {
 		throw new AssertionError("Not implemented");
 	}

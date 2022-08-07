@@ -6,7 +6,7 @@ import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
-import dev.latvian.mods.kubejs.create.SpecialSpoutHandlerEvent;
+import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import net.minecraft.core.BlockPos;
