@@ -5,7 +5,7 @@ import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
-import dev.latvian.mods.kubejs.create.SpecialSpoutHandlerEvent;
+import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
