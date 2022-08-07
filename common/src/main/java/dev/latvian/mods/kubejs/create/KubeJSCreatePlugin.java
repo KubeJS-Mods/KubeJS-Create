@@ -1,6 +1,5 @@
 package dev.latvian.mods.kubejs.create;
 
-import com.google.common.collect.ImmutableMap;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
@@ -21,10 +20,10 @@ import java.util.function.Supplier;
  */
 public class KubeJSCreatePlugin extends KubeJSPlugin {
 
-	private static final Map<ResourceLocation, Supplier<RecipeJS>> recipeProviders = ImmutableMap.<ResourceLocation, Supplier<RecipeJS>>builder()
-			.put(new ResourceLocation("create:deploying"), ItemApplicationRecipeJS::new)
-			.put(new ResourceLocation("create:item_application"), ItemApplicationRecipeJS::new)
-			.build();
+	private static final Map<ResourceLocation, Supplier<RecipeJS>> recipeProviders = Map.of(
+			new ResourceLocation("create:deploying"), ItemApplicationRecipeJS::new,
+			new ResourceLocation("create:item_application"), ItemApplicationRecipeJS::new
+	);
 
 	@Override
 	public void init() {
