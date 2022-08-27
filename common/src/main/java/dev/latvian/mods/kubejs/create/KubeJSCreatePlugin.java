@@ -28,6 +28,7 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 	@Override
 	public void init() {
 		RegistryObjectBuilderTypes.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
+		RegistryObjectBuilderTypes.ITEM.addType("create:sandpaper", SandpaperItemBuilder.class, SandpaperItemBuilder::new);
 	}
 
 	@Override
