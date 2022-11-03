@@ -4,6 +4,7 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.create.cogwheel.CogWheelBlockBuilder;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialFluidHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
@@ -28,6 +29,7 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 	@Override
 	public void init() {
 		RegistryObjectBuilderTypes.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
+		RegistryObjectBuilderTypes.BLOCK.addType("create:cog_wheel", CogWheelBlockBuilder.class, CogWheelBlockBuilder::new);
 	}
 
 	@Override
