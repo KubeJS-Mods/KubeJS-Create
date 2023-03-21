@@ -3,7 +3,7 @@ repositories {
 		name "devOS (Create)"
 		url "https://mvn.devos.one/snapshots/"
 		content {
-			includeGroup "com.simibubi"
+			includeGroup "com.simibubi.create"
 		}
 	}
 
@@ -22,7 +22,7 @@ dependencies {
 
 	// create specifically from the devOS repo, to ensure it's the fabric version
 	// note we are trying to avoid using fabric-specific hooks here!
-	modApi ("com.simibubi:Create:${rootProject.create_version}") {
+	modApi("com.simibubi.create:create-fabric-${rootProject.minecraft_version}:${rootProject.create_version}") {
 		transitive = false
 	}
 }

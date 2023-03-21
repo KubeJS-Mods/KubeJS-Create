@@ -29,16 +29,29 @@ repositories {
 		content {
 			includeGroup "com.simibubi.create"
 			includeGroup "com.jozufozu.flywheel"
+			includeGroup "com.tterrag.registrate"
+		}
+	}
+	maven {
+		url "https://maven.theillusivec4.top/"
+		content {
+			includeGroup "top.theillusivec4.curios"
+		}
+	}
+
+	maven {
+		url 'https://dvs1.progwml6.com/files/maven'
+		content {
+			includeGroup "mezz.jei"
 		}
 	}
 }
-
 dependencies {
 	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
-	modApi "com.simibubi.create:Create:${rootProject.create_version}"
-	modApi "com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_forge_version}"
+	modApi "com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_forge_version}:slim"
+	modApi "com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}"
 
 	modLocalRuntime modCompileOnly("me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}")
 
