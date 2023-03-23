@@ -15,7 +15,7 @@ import java.util.List;
  * @author Prunoideae
  */
 public class SpecialSpoutHandlerEvent extends EventJS {
-	public static final String ID = "create.spout.special";
+	public static final String ID = "spoutHandler";
 
 	@FunctionalInterface
 	public interface SpoutHandler {

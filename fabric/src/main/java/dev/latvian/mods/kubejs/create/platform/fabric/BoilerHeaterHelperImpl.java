@@ -7,6 +7,6 @@ import net.minecraft.world.level.block.Block;
 
 public class BoilerHeaterHelperImpl {
     public static void registerHeaterPlatform(Block block, BoilerHeaterHandlerEvent.BoilerHeaterCallback onUpdate) {
-        BoilerHeaters.registerHeater(block, (level, blockPos, blockState) -> onUpdate.updateHeat(UtilsJS.getLevel(level).getBlock(blockPos)));
+        BoilerHeaters.registerHeater(block, (level, blockPos, blockState) -> onUpdate.updateHeat(level.kjs$getBlock(blockPos)));
     }
 }

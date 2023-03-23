@@ -16,7 +16,7 @@ license = "GNU LGPLv3"
 [[dependencies.kubejs_create]]
 modId = "kubejs"
 mandatory = true
-versionRange = "[1802.5.1-build.331,)"
+versionRange = "[1902.6.0-build.142,)"
 ordering = "AFTER"
 side = "BOTH"
 

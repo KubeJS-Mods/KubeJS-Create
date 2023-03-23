@@ -5,11 +5,11 @@ import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSeria
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
+import dev.latvian.mods.kubejs.create.events.CreateEvents;
 import dev.latvian.mods.kubejs.create.events.SpecialFluidHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
-import dev.latvian.mods.kubejs.recipe.RegisterRecipeHandlersEvent;
-import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.recipe.RegisterRecipeTypesEvent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
@@ -20,32 +20,37 @@ import java.util.function.Supplier;
  */
 public class KubeJSCreatePlugin extends KubeJSPlugin {
 
-	private static final Map<ResourceLocation, Supplier<RecipeJS>> recipeProviders = Map.of(
-			new ResourceLocation("create:deploying"), ItemApplicationRecipeJS::new,
-			new ResourceLocation("create:item_application"), ItemApplicationRecipeJS::new
-	);
+    private static final Map<ResourceLocation, Supplier<RecipeJS>> recipeProviders = Map.of(
+            new ResourceLocation("create:deploying"), ItemApplicationRecipeJS::new,
+            new ResourceLocation("create:item_application"), ItemApplicationRecipeJS::new
+    );
 
-	@Override
-	public void init() {
-		RegistryObjectBuilderTypes.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
-	}
+    @Override
+    public void init() {
+        RegistryObjectBuilderTypes.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
+    }
 
-	@Override
-	public void afterInit() {
-		new SpecialSpoutHandlerEvent().post(ScriptType.STARTUP, SpecialSpoutHandlerEvent.ID);
-		new SpecialFluidHandlerEvent().post(ScriptType.STARTUP, SpecialFluidHandlerEvent.ID);
-		new BoilerHeaterHandlerEvent().post(ScriptType.STARTUP, BoilerHeaterHandlerEvent.ID);
-	}
+    @Override
+    public void registerEvents() {
+        CreateEvents.GROUP.register();
+    }
 
-	@Override
-	public void addRecipes(RegisterRecipeHandlersEvent event) {
-		event.register(new ResourceLocation("create:sequenced_assembly"), SequencedAssemblyRecipeJS::new);
-		event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
+    @Override
+    public void afterInit() {
+        CreateEvents.BOILER_HEATER.post(new BoilerHeaterHandlerEvent());
+        CreateEvents.SPECIAL_FLUID.post(new SpecialFluidHandlerEvent());
+        CreateEvents.SPECIAL_SPOUT.post(new SpecialSpoutHandlerEvent());
+    }
 
-		for (var createRecipeType : AllRecipeTypes.values()) {
-			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer) {
-				event.register(createRecipeType.getId(), recipeProviders.getOrDefault(createRecipeType.getId(), ProcessingRecipeJS::new));
-			}
-		}
-	}
+    @Override
+    public void registerRecipeTypes(RegisterRecipeTypesEvent event) {
+        event.register(new ResourceLocation("create:sequenced_assembly"), SequencedAssemblyRecipeJS::new);
+        event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
+
+        for (var createRecipeType : AllRecipeTypes.values()) {
+            if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer) {
+                event.register(createRecipeType.getId(), recipeProviders.getOrDefault(createRecipeType.getId(), ProcessingRecipeJS::new));
+            }
+        }
+    }
 }
