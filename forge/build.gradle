@@ -50,7 +50,7 @@ dependencies {
 	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
-	modApi "com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_forge_version}:slim"
+	modApi "com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim"
 	modApi "com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}"
 
 	modLocalRuntime modCompileOnly("me.shedaniel:RoughlyEnoughItems-forge:${rootProject.rei_version}")
