@@ -4,6 +4,7 @@ import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
 import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+import dev.architectury.hooks.fluid.fabric.FluidStackHooksFabric;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
@@ -17,7 +18,7 @@ import java.util.function.BiConsumer;
 
 public class FluidIngredientHelperImpl {
 	public static FluidIngredient toFluidIngredient(FluidStackJS fluidStack) {
-		return FluidIngredient.fromFluidStack(FluidStack.loadFluidStackFromNBT(fluidStack.toNBT()));
+		return FluidIngredient.fromFluidStack(new FluidStack(FluidStackHooksFabric.toFabric(fluidStack.getFluidStack()),fluidStack.getAmount()));
 	}
 
 	public static OpenEndedPipe.IEffectHandler createEffectHandler(FluidIngredient fluidIngredient, BiConsumer<OpenEndedPipe, FluidStackJS> handler) {
