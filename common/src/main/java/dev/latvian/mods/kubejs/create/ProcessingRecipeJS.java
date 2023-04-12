@@ -97,7 +97,7 @@ public class ProcessingRecipeJS extends RecipeJS {
 			var jsonIngredients = new JsonArray();
 
 			for (var inputStack : inputItems) {
-				jsonIngredients.add(inputStack.toJson());
+				inputStack.kjs$unwrapStackIngredient().forEach(ingredient -> jsonIngredients.add(ingredient.toJson()));
 			}
 
 			for (var fluid : inputFluids) {
