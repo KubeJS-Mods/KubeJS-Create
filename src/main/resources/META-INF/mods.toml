@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[40,)"
+issueTrackerURL = "https://github.com/KubeJS-Mods/KubeJS-Create/issues"
+license = "GNU LGPLv3"
+
+[[mods]]
+modId = "kubejs_create"
+version = "${version}"
+displayName = "KubeJS Create"
+authors = "LatvianModder"
+description = '''
+KubeJS Create integration
+'''
+license = "GNU LGPLv3"
+
+[[dependencies.kubejs_create]]
+modId = "kubejs"
+mandatory = true
+versionRange = "[1902.6.0-build.142,1902.6.1-)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.kubejs_create]]
+modId = "create"
+mandatory = true
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
