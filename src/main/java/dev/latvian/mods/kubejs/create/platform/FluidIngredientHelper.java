@@ -1,4 +1,4 @@
-package dev.latvian.mods.kubejs.create.platform.fabric;
+package dev.latvian.mods.kubejs.create.platform;
 
 import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
 import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.function.BiConsumer;
 
-public class FluidIngredientHelperImpl {
+public class FluidIngredientHelper {
 	public static FluidIngredient toFluidIngredient(FluidStackJS fluidStack) {
 		return FluidIngredient.fromFluidStack(new FluidStack(FluidStackHooksFabric.toFabric(fluidStack.getFluidStack()),fluidStack.getAmount()));
 	}
