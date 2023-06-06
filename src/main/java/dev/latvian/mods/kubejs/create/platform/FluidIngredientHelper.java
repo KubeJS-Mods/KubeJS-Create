@@ -1,23 +1,23 @@
-package dev.latvian.mods.kubejs.create.platform.forge;
+package dev.latvian.mods.kubejs.create.platform;
 
 import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
 import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
 import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.BiConsumer;
 
-public class FluidIngredientHelperImpl {
+public class FluidIngredientHelper {
 	public static FluidIngredient toFluidIngredient(FluidStackJS fluidStack) {
-		return FluidIngredient.fromFluidStack(FluidStackHooksForge.toForge(fluidStack.getFluidStack()));
+		return FluidIngredient.fromFluidStack(FluidStack.loadFluidStackFromNBT(fluidStack.toNBT()));
 	}
 
 	public static OpenEndedPipe.IEffectHandler createEffectHandler(FluidIngredient fluidIngredient, BiConsumer<OpenEndedPipe, FluidStackJS> handler) {
@@ -37,10 +37,11 @@ public class FluidIngredientHelperImpl {
 	public static BlockSpoutingBehaviour createSpoutingHandler(BlockStatePredicate block, SpecialSpoutHandlerEvent.SpoutHandler handler) {
 		return new BlockSpoutingBehaviour() {
 			@Override
-			public int fillBlock(Level world, BlockPos pos, SpoutTileEntity spout, FluidStack availableFluid, boolean simulate) {
-				if (!block.test(world.getBlockState(pos)))
+			public long fillBlock(Level world, BlockPos pos, SpoutTileEntity spout, FluidStack availableFluid, boolean simulate) {
+				if (!block.test(world.getBlockState(pos))) {
 					return 0;
-				return (int) handler.fillBlock(new BlockContainerJS(world, pos), FluidStackJS.of(FluidStackHooksForge.fromForge(availableFluid)), simulate);
+				}
+				return handler.fillBlock(new BlockContainerJS(world, pos), FluidStackJS.of(availableFluid.writeToNBT(new CompoundTag())), simulate);
 			}
 		};
 	}
