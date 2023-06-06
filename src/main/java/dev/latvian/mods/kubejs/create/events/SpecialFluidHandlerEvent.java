@@ -1,6 +1,6 @@
 package dev.latvian.mods.kubejs.create.events;
 
-import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
+import com.simibubi.create.content.fluids.OpenEndedPipe;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
 import dev.latvian.mods.kubejs.event.EventJS;

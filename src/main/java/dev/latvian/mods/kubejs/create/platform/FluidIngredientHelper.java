@@ -1,8 +1,8 @@
-package dev.latvian.mods.kubejs.create.platform.forge;
+package dev.latvian.mods.kubejs.create.platform;
 
 import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
-import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
-import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
+import com.simibubi.create.content.fluids.OpenEndedPipe;
+import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.BiConsumer;
 
-public class FluidIngredientHelperImpl {
+public class FluidIngredientHelper {
 	public static FluidIngredient toFluidIngredient(FluidStackJS fluidStack) {
 		return FluidIngredient.fromFluidStack(FluidStackHooksForge.toForge(fluidStack.getFluidStack()));
 	}
@@ -37,9 +37,10 @@ public class FluidIngredientHelperImpl {
 	public static BlockSpoutingBehaviour createSpoutingHandler(BlockStatePredicate block, SpecialSpoutHandlerEvent.SpoutHandler handler) {
 		return new BlockSpoutingBehaviour() {
 			@Override
-			public int fillBlock(Level world, BlockPos pos, SpoutTileEntity spout, FluidStack availableFluid, boolean simulate) {
-				if (!block.test(world.getBlockState(pos)))
+			public int fillBlock(Level world, BlockPos pos, SpoutBlockEntity spout, FluidStack availableFluid, boolean simulate) {
+				if (!block.test(world.getBlockState(pos))) {
 					return 0;
+				}
 				return (int) handler.fillBlock(new BlockContainerJS(world, pos), FluidStackJS.of(FluidStackHooksForge.fromForge(availableFluid)), simulate);
 			}
 		};

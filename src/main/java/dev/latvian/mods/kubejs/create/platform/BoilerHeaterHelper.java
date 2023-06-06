@@ -1,12 +1,12 @@
 package dev.latvian.mods.kubejs.create.platform;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
+import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.world.level.block.Block;
 
 public class BoilerHeaterHelper {
-	@ExpectPlatform
 	public static void registerHeaterPlatform(Block block, BoilerHeaterHandlerEvent.BoilerHeaterCallback onUpdate) {
-		throw new AssertionError("Not implemented");
+		BoilerHeaters.registerHeater(block, (level, blockPos, blockState) -> onUpdate.updateHeat(UtilsJS.getLevel(level).getBlock(blockPos)));
 	}
 }

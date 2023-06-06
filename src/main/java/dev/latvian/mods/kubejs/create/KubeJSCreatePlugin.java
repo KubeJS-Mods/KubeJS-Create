@@ -1,7 +1,8 @@
 package dev.latvian.mods.kubejs.create;
 
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
@@ -43,7 +44,7 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 		event.registerShaped(new ResourceLocation("create:mechanical_crafting"));
 
 		for (var createRecipeType : AllRecipeTypes.values()) {
-			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer) {
+			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer<?>) {
 				event.register(createRecipeType.getId(), recipeProviders.getOrDefault(createRecipeType.getId(), ProcessingRecipeJS::new));
 			}
 		}

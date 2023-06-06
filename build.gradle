@@ -1,71 +1,155 @@
 plugins {
-	id "architectury-plugin" version "3.4-SNAPSHOT"
-	id "dev.architectury.loom" version "0.12.0-SNAPSHOT" apply false
-	id "io.github.juuxel.loom-quiltflower" version "1.7.2" apply false
+	id "dev.architectury.loom" version "1.2-SNAPSHOT"
+	id "io.github.juuxel.loom-quiltflower" version "1.7.2"
+	id "maven-publish"
+	id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
-architectury {
-	minecraft = rootProject.minecraft_version
+apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
+
+def ENV = System.getenv()
+version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: '9999'}"
+archivesBaseName = project.archives_base_name
+group = project.maven_group
+
+loom {
+	silentMojangMappingsLicense()
 }
 
-subprojects {
-	apply plugin: "dev.architectury.loom"
-	apply plugin: "io.github.juuxel.loom-quiltflower"
-
-	loom {
-		silentMojangMappingsLicense()
+repositories {
+	maven {
+		url "https://maven.saps.dev/releases"
 	}
 
-	dependencies {
-		minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-		mappings loom.layered() {
-			officialMojangMappings()
-			// parchment("org.parchmentmc.data:parchment-1.17.1:2021.10.10")
+	maven {
+		url "https://maven.tterrag.com/"
+		content {
+			includeGroup "com.simibubi.create"
+			includeGroup "com.jozufozu.flywheel"
+			includeGroup "com.tterrag.registrate"
+		}
+	}
+
+	maven {
+		url "https://maven.theillusivec4.top/"
+		content {
+			includeGroup "top.theillusivec4.curios"
+		}
+	}
+
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
 		}
 	}
 }
 
-allprojects {
-	apply plugin: "java"
-	apply plugin: "architectury-plugin"
-	apply plugin: "maven-publish"
-	apply from: "https://files.latmod.com/public/markdown-git-changelog.gradle"
+dependencies {
+	minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+	mappings loom.officialMojangMappings()
 
-	def ENV = System.getenv()
-	version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
-	group = project.maven_group
-	archivesBaseName = project.archives_base_name
+	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
-	sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
+	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
+	modApi("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") {
+		transitive = false // transitive jei and cc tweaked dependencies leaking through 😍
+	}
+	modApi "com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_version}"
 
-	compileJava {
-		options.encoding = "UTF-8"
+	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4434393")
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("META-INF/mods.toml") {
+		expand "version": project.version
+	}
+}
+
+java {
+	withSourcesJar()
+}
+
+remapJar {
+	archiveBaseName.set "${rootProject.archives_base_name}-forge"
+	archiveClassifier.set null
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}" }
+	}
+
+	manifest {
+		attributes([
+				"Specification-Title"     : project.mod_id,
+				"Specification-Vendor"    : project.mod_author,
+				"Specification-Version"   : "1",
+				"Implementation-Title"    : project.name,
+				"Implementation-Version"  : version,
+				"Implementation-Vendor"   : project.mod_author,
+				"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+
+	archiveClassifier.set "dev"
+}
+
+if (ENV.CURSEFORGE_KEY) {
+	curseforge {
+		apiKey = ENV.CURSEFORGE_KEY
+		project {
+			id = project.curseforge_id
+			releaseType = project.curseforge_type
+			addGameVersion "Forge"
+			addGameVersion "1.18.2"
+			mainArtifact(remapJar.archivePath)
+			relations {
+				requiredDependency 'kubejs'
+				requiredDependency 'create'
+			}
+			changelog = getGitChangelog
+			changelogType = 'markdown'
+		}
+	}
+}
+
+publishing {
+	publications {
+		mavenForge(MavenPublication) {
+			artifactId = rootProject.archivesBaseName
+			artifact(remapJar) {
+				classifier null
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+		}
 	}
 
 	repositories {
-		maven {
-			url "https://maven.architectury.dev/"
-		}
-
-		maven {
-			url "https://maven.saps.dev/minecraft"
-			content {
-				includeGroup "dev.latvian.mods"
-				includeGroup "dev.ftb.mods"
+		if (ENV.FTB_MAVEN_TOKEN) {
+			maven {
+				url "https://maven.ftb.dev/release"
+				credentials {
+					username = "latvian"
+					password = "${ENV.FTB_MAVEN_TOKEN}"
+				}
 			}
 		}
 
-		maven {
-			url = "https://maven.parchmentmc.net/"
-			content {
-				includeGroup "org.parchmentmc.data"
+		if (ENV.SAPS_TOKEN) {
+			maven {
+				url "https://maven.saps.dev/minecraft"
+				credentials {
+					username = "latvian"
+					password = "${ENV.SAPS_TOKEN}"
+				}
 			}
 		}
-
-		mavenLocal()
-	}
-
-	java {
-		withSourcesJar()
 	}
 }
