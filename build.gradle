@@ -11,7 +11,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 def ENV = System.getenv()
 version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: '9999'}"
-archivesBaseName = project.archives_base_name
+archivesBaseName = "${project.archives_base_name}-fabric"
 group = project.maven_group
 
 loom {
@@ -120,12 +120,7 @@ publishing {
 	publications {
 		mavenFabric(MavenPublication) {
 			artifactId = rootProject.archivesBaseName
-			artifact(remapJar) {
-				classifier null
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 
