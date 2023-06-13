@@ -11,7 +11,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 def ENV = System.getenv()
 version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: '9999'}"
-archivesBaseName = project.archives_base_name
+archivesBaseName = "${project.archives_base_name}-forge"
 group = project.maven_group
 
 loom {
@@ -74,11 +74,6 @@ java {
 	withSourcesJar()
 }
 
-remapJar {
-	archiveBaseName.set "${rootProject.archives_base_name}-forge"
-	archiveClassifier.set null
-}
-
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}" }
@@ -122,12 +117,7 @@ publishing {
 	publications {
 		mavenForge(MavenPublication) {
 			artifactId = rootProject.archivesBaseName
-			artifact(remapJar) {
-				classifier null
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
+			from components.java
 		}
 	}
 
