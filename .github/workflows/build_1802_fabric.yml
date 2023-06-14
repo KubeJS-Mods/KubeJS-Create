@@ -3,10 +3,10 @@ name: Java CI (1.18.2 Fabric)
 on:
   push:
     branches:
-      - 1.18/fabric
+      - '1802/fabric'
   workflow_dispatch:
     branches:
-      - 1.18/fabric
+      - '1802/fabric'
     inputs:
       release_type:
         description: 'Release Type'
