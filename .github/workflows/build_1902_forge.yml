@@ -3,7 +3,7 @@ name: Java CI (1.19.2 Forge)
 on:
   push:
     branches:
-      - 1.18/forge
+      - 1.19/forge
   workflow_dispatch:
     branches:
       - 1.19/forge
