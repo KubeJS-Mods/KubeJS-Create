@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - "1.19/fabric"
-  workflow_dispatch:
-    inputs:
-      norelease:
-        description: 'Do not publish'
-        required: true
-        default: 'false'
 
 jobs:
   build:
@@ -42,14 +36,3 @@ jobs:
           SAPS_TOKEN: ${{ secrets.SAPS_TOKEN }}
         with:
           arguments: build publish --stacktrace --no-daemon
-
-      - name: Release to CurseForge
-        uses: gradle/gradle-build-action@v2
-        if: |
-          github.event_name == 'workflow_dispatch' && github.event.inputs.norelease != 'true'
-        env:
-          GIT_COMMIT: ${{ github.event.after }}
-          GIT_PREVIOUS_COMMIT: ${{ github.event.before }}
-          CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
-        with:
-          arguments: curseforge --stacktrace --no-daemon
