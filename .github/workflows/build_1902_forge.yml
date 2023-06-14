@@ -3,10 +3,10 @@ name: Java CI (1.19.2 Forge)
 on:
   push:
     branches:
-      - 1.19/forge
+      - '1902/forge'
   workflow_dispatch:
     branches:
-      - 1.19/forge
+      - '1902/forge'
     inputs:
       release_type:
         description: 'Release Type'
