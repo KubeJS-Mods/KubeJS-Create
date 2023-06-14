@@ -1,21 +1,22 @@
 name: Java CI (1.18.2 Fabric)
 
 on:
-  push:
-    branches:
-      - "1.18/fabric"
   workflow_dispatch:
     inputs:
-      norelease:
-        description: 'Do not publish'
+      release_type:
+        description: 'Release Type'
         required: true
-        default: 'false'
+        type: choice
+        default: 'release'
+        options:
+          - 'release'
+          - 'beta'
+          - 'alpha'
+          - 'none'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: |
-      !contains(github.event.head_commit.message, '[ci skip]')
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -45,11 +46,11 @@ jobs:
 
       - name: Release to CurseForge
         uses: gradle/gradle-build-action@v2
-        if: |
-          github.event_name == 'workflow_dispatch' && github.event.inputs.norelease != 'true'
+        if: ${{ inputs.release_type != 'none' }}
         env:
           GIT_COMMIT: ${{ github.event.after }}
           GIT_PREVIOUS_COMMIT: ${{ github.event.before }}
           CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
+          RELEASE_TYPE: ${{ inputs.release_type }}
         with:
           arguments: curseforge --stacktrace --no-daemon
