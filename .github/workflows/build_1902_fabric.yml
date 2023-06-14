@@ -3,7 +3,21 @@ name: Java CI (1.19.2 Fabric)
 on:
   push:
     branches:
-      - "1.19/fabric"
+      - 1.19/fabric
+  workflow_dispatch:
+    branches:
+      - 1.19/fabric
+    inputs:
+      release_type:
+        description: 'Release Type'
+        required: true
+        type: choice
+        default: 'release'
+        options:
+          - 'release'
+          - 'beta'
+          - 'alpha'
+          - 'none'
 
 jobs:
   build:
@@ -36,3 +50,14 @@ jobs:
           SAPS_TOKEN: ${{ secrets.SAPS_TOKEN }}
         with:
           arguments: build publish --stacktrace --no-daemon
+
+      - name: Release to CurseForge
+        uses: gradle/gradle-build-action@v2
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_type != 'none' }}
+        env:
+          GIT_COMMIT: ${{ github.event.after }}
+          GIT_PREVIOUS_COMMIT: ${{ github.event.before }}
+          CURSEFORGE_KEY: ${{ secrets.CURSEFORGE_KEY }}
+          RELEASE_TYPE: ${{ inputs.release_type }}
+        with:
+          arguments: curseforge --stacktrace --no-daemon
