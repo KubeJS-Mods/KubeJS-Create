@@ -1,6 +1,6 @@
 package dev.latvian.mods.kubejs.create.platform;
 
-import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import net.minecraft.world.level.block.Block;
 

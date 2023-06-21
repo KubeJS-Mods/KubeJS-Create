@@ -1,9 +1,9 @@
 package dev.latvian.mods.kubejs.create;
 
 import com.google.gson.JsonArray;
-import com.simibubi.create.content.contraptions.itemAssembly.IAssemblyRecipe;
-import com.simibubi.create.content.contraptions.itemAssembly.SequencedRecipe;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
+import com.simibubi.create.content.processing.sequenced.SequencedRecipe;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.recipe.IngredientMatch;
 import dev.latvian.mods.kubejs.recipe.ItemInputTransformer;

@@ -1,6 +1,6 @@
 package dev.latvian.mods.kubejs.create.events;
 
-import com.simibubi.create.content.contraptions.fluids.tank.BoilerHeaters;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.platform.BoilerHeaterHelper;
 import dev.latvian.mods.kubejs.event.EventJS;
