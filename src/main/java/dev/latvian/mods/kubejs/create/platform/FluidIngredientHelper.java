@@ -1,8 +1,8 @@
 package dev.latvian.mods.kubejs.create.platform;
 
 import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
-import com.simibubi.create.content.contraptions.fluids.OpenEndedPipe;
-import com.simibubi.create.content.contraptions.fluids.actors.SpoutTileEntity;
+import com.simibubi.create.content.fluids.OpenEndedPipe;
+import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
@@ -37,7 +37,7 @@ public class FluidIngredientHelper {
 	public static BlockSpoutingBehaviour createSpoutingHandler(BlockStatePredicate block, SpecialSpoutHandlerEvent.SpoutHandler handler) {
 		return new BlockSpoutingBehaviour() {
 			@Override
-			public long fillBlock(Level world, BlockPos pos, SpoutTileEntity spout, FluidStack availableFluid, boolean simulate) {
+			public long fillBlock(Level world, BlockPos pos, SpoutBlockEntity spout, FluidStack availableFluid, boolean simulate) {
 				if (!block.test(world.getBlockState(pos))) {
 					return 0;
 				}
