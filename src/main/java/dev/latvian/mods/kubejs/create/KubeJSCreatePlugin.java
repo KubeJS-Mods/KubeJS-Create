@@ -1,8 +1,8 @@
 package dev.latvian.mods.kubejs.create;
 
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.utility.Lang;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.CreateEvents;
@@ -12,6 +12,7 @@ import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.recipe.schema.RegisterRecipeSchemasEvent;
+import dev.latvian.mods.kubejs.recipe.schema.minecraft.ShapedRecipeSchema;
 import dev.latvian.mods.kubejs.registry.RegistryInfo;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.MapJS;
@@ -64,15 +65,13 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 
 	@Override
 	public void registerRecipeSchemas(RegisterRecipeSchemasEvent event) {
-		var ns = event.namespace("create");
-
-		ns.shaped("mechanical_crafting")
-				.register("sequenced_assembly", SequencedAssemblyRecipeSchema.SCHEMA);
+		event.register(AllRecipeTypes.MECHANICAL_CRAFTING.getId(), ShapedRecipeSchema.SCHEMA);
+		event.register(AllRecipeTypes.SEQUENCED_ASSEMBLY.getId(), SequencedAssemblyRecipeSchema.SCHEMA);
 
 		for (var createRecipeType : AllRecipeTypes.values()) {
 			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer<?>) {
 				var schema = recipeSchemas.getOrDefault(createRecipeType, ProcessingRecipeSchema.PROCESSING_DEFAULT);
-				ns.register(Lang.asId(createRecipeType.name()), schema);
+				event.register(createRecipeType.getId(), schema);
 			}
 		}
 	}
