@@ -58,6 +58,7 @@ dependencies {
 		transitive = false // transitive jei and cc tweaked dependencies leaking through 😍
 	}
 	modApi "com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_version}"
+	modApi "com.tterrag.registrate:Registrate:${registrate_version}"
 
 	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4494410")
 }
