@@ -65,15 +65,13 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 
 	@Override
 	public void registerRecipeSchemas(RegisterRecipeSchemasEvent event) {
-		var ns = event.namespace("create");
-
-		ns.shaped("mechanical_crafting")
-				.register("sequenced_assembly", SequencedAssemblyRecipeSchema.SCHEMA);
+		event.register(AllRecipeTypes.MECHANICAL_CRAFTING.getId(), ShapedRecipeSchema.SCHEMA);
+		event.register(AllRecipeTypes.SEQUENCED_ASSEMBLY.getId(), SequencedAssemblyRecipeSchema.SCHEMA);
 
 		for (var createRecipeType : AllRecipeTypes.values()) {
 			if (createRecipeType.getSerializer() instanceof ProcessingRecipeSerializer<?>) {
 				var schema = recipeSchemas.getOrDefault(createRecipeType, ProcessingRecipeSchema.PROCESSING_DEFAULT);
-				ns.register(Lang.asId(createRecipeType.name()), schema);
+				event.register(createRecipeType.getId(), schema);
 			}
 		}
 	}
