@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 
 public class FluidIngredientHelper {
 	public static FluidIngredient toFluidIngredient(FluidStackJS fluidStack) {
-		return FluidIngredient.fromFluidStack(new FluidStack(FluidStackHooksFabric.toFabric(fluidStack.getFluidStack()),fluidStack.getAmount()));
+		return FluidIngredient.fromFluidStack(new FluidStack(FluidStackHooksFabric.toFabric(fluidStack.getFluidStack()),fluidStack.kjs$getAmount()));
 	}
 
 	public static OpenEndedPipe.IEffectHandler createEffectHandler(FluidIngredient fluidIngredient, BiConsumer<OpenEndedPipe, FluidStackJS> handler) {

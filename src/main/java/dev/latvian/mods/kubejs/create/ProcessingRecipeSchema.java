@@ -52,7 +52,7 @@ public interface ProcessingRecipeSchema {
 			} else if (from instanceof FluidIngredient fluid) {
 				return new CreateInputFluid(fluid);
 			} else if (from instanceof FluidStackJS fluid) {
-				return new CreateInputFluid(FluidIngredient.fromFluid(fluid.getFluid(), (int) fluid.getAmount()));
+				return new CreateInputFluid(FluidIngredient.fromFluid(fluid.getFluid(), (int) fluid.kjs$getAmount()));
 			} else if (from instanceof FluidStack fluid) {
 				return new CreateInputFluid(FluidIngredient.fromFluidStack(fluid));
 			} else {
