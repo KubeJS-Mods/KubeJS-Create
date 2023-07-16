@@ -1,0 +1,16 @@
+{
+	"minecraft": 1902,
+	"type": "fabric",
+	"version": {
+		"file": "gradle.properties",
+		"pattern": "^mod_version=([\\w.]+)$",
+		"group": 1,
+		"format": "{version}-build.{run_number}"
+	},
+	"downloads": [
+		{
+			"name": "Fabric",
+			"url": "https://maven.saps.dev/releases/dev/latvian/mods/kubejs-create-fabric/{version}/kubejs-create-fabric-{version}.jar"
+		}
+	]
+}
