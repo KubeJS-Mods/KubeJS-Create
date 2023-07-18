@@ -21,6 +21,6 @@
 	"depends": {
 		"minecraft": ">=1.19.2",
 		"kubejs": ">=1902.6.1-build.300",
-		"create": ">=0.5.1-b"
+		"create": "*"
 	}
 }
