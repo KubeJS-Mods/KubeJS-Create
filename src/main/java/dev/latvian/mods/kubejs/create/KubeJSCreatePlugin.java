@@ -28,7 +28,9 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 
 	private static final Map<AllRecipeTypes, RecipeSchema> recipeSchemas = Map.of(
 			AllRecipeTypes.DEPLOYING, ProcessingRecipeSchema.ITEM_APPLICATION,
-			AllRecipeTypes.ITEM_APPLICATION, ProcessingRecipeSchema.ITEM_APPLICATION
+			AllRecipeTypes.ITEM_APPLICATION, ProcessingRecipeSchema.ITEM_APPLICATION,
+			AllRecipeTypes.MIXING, ProcessingRecipeSchema.PROCESSING_UNWRAPPED,
+			AllRecipeTypes.COMPACTING, ProcessingRecipeSchema.PROCESSING_UNWRAPPED
 	);
 
 	@Override
