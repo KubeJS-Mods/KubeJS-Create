@@ -1,5 +1,6 @@
 package dev.latvian.mods.kubejs.create;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
@@ -15,7 +16,10 @@ import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
 import dev.latvian.mods.kubejs.recipe.component.BooleanComponent;
 import dev.latvian.mods.kubejs.recipe.component.FluidComponents;
+import dev.latvian.mods.kubejs.recipe.component.ItemComponents;
 import dev.latvian.mods.kubejs.recipe.component.NumberComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentWithParent;
 import dev.latvian.mods.kubejs.recipe.component.StringComponent;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
@@ -28,6 +32,28 @@ public interface ProcessingRecipeSchema {
 
 	RecipeKey<Either<OutputFluid, OutputItem>[]> RESULTS = FluidComponents.OUTPUT_OR_ITEM_ARRAY.key("results");
 	RecipeKey<Either<InputFluid, InputItem>[]> INGREDIENTS = FluidComponents.INPUT_OR_ITEM_ARRAY.key("ingredients");
+
+	RecipeKey<Either<InputFluid, InputItem>[]> INGREDIENTS_UNWRAPPED = new RecipeComponentWithParent<Either<InputFluid, InputItem>[]>() {
+		@Override
+		public RecipeComponent<Either<InputFluid, InputItem>[]> parentComponent() {
+			return INGREDIENTS.component;
+		}
+
+		@Override
+		public JsonElement write(RecipeJS recipe, Either<InputFluid, InputItem>[] value) {
+			// during writing, unwrap all stacked input items
+			var json = new JsonArray();
+			for (var either : value) {
+				either.ifLeft(fluid -> json.add(FluidComponents.INPUT.write(recipe, fluid)))
+						.ifRight(item -> {
+							for (var unwrapped : item.unwrap()) {
+								json.add(ItemComponents.INPUT.write(recipe, unwrapped));
+							}
+						});
+			}
+			return json;
+		}
+	}.key("ingredients");
 
 	RecipeKey<Integer> PROCESSING_TIME = NumberComponent.INT.key("processingTime").optional(100);
 
@@ -103,6 +129,8 @@ public interface ProcessingRecipeSchema {
 	}
 
 	RecipeSchema PROCESSING_DEFAULT = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS, PROCESSING_TIME, HEAT_REQUIREMENT);
+
+	RecipeSchema PROCESSING_UNWRAPPED = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS_UNWRAPPED, PROCESSING_TIME, HEAT_REQUIREMENT);
 
 	RecipeSchema ITEM_APPLICATION = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS, PROCESSING_TIME, HEAT_REQUIREMENT, KEEP_HELD_ITEM);
 }
