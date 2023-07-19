@@ -14,13 +14,7 @@ import dev.latvian.mods.kubejs.item.InputItem;
 import dev.latvian.mods.kubejs.item.OutputItem;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
-import dev.latvian.mods.kubejs.recipe.component.BooleanComponent;
-import dev.latvian.mods.kubejs.recipe.component.FluidComponents;
-import dev.latvian.mods.kubejs.recipe.component.ItemComponents;
-import dev.latvian.mods.kubejs.recipe.component.NumberComponent;
-import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
-import dev.latvian.mods.kubejs.recipe.component.RecipeComponentWithParent;
-import dev.latvian.mods.kubejs.recipe.component.StringComponent;
+import dev.latvian.mods.kubejs.recipe.component.*;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,7 +64,6 @@ public interface ProcessingRecipeSchema {
 	RecipeKey<Boolean> KEEP_HELD_ITEM = BooleanComponent.BOOLEAN.key("keepHeldItem").optional(false);
 
 	class ProcessingRecipeJS extends RecipeJS {
-
 		@Override
 		public InputFluid readInputFluid(Object from) {
 			if (from instanceof CreateInputFluid fluid) {
@@ -128,9 +121,15 @@ public interface ProcessingRecipeSchema {
 		}
 	}
 
+	class ItemApplicationRecipeJS extends ProcessingRecipeJS {
+		public RecipeJS keepHeldItem() {
+			return setValue(KEEP_HELD_ITEM, true);
+		}
+	}
+
 	RecipeSchema PROCESSING_DEFAULT = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS, PROCESSING_TIME, HEAT_REQUIREMENT);
 
 	RecipeSchema PROCESSING_UNWRAPPED = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS_UNWRAPPED, PROCESSING_TIME, HEAT_REQUIREMENT);
 
-	RecipeSchema ITEM_APPLICATION = new RecipeSchema(ProcessingRecipeJS.class, ProcessingRecipeJS::new, RESULTS, INGREDIENTS, PROCESSING_TIME, HEAT_REQUIREMENT, KEEP_HELD_ITEM);
+	RecipeSchema ITEM_APPLICATION = new RecipeSchema(ItemApplicationRecipeJS.class, ItemApplicationRecipeJS::new, RESULTS, INGREDIENTS, PROCESSING_TIME, HEAT_REQUIREMENT, KEEP_HELD_ITEM);
 }
