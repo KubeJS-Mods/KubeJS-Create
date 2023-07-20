@@ -49,7 +49,7 @@ public interface ProcessingRecipeSchema {
 		}
 	}.key("ingredients");
 
-	RecipeKey<Integer> PROCESSING_TIME = NumberComponent.INT.key("processingTime").optional(100);
+	RecipeKey<Long> PROCESSING_TIME = TimeComponent.TICKS.key("processingTime").optional(100L);
 
 	RecipeKey<String> HEAT_REQUIREMENT = new StringComponent("not a valid heat condition!", s -> {
 		for (var h : HeatCondition.values()) {
