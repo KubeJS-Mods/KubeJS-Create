@@ -19,10 +19,9 @@ import dev.latvian.mods.kubejs.recipe.RecipeKey;
 import dev.latvian.mods.kubejs.recipe.component.*;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.fluids.FluidStack;
 
 /**
  * @author LatvianModder
@@ -101,7 +100,7 @@ public interface ProcessingRecipeSchema {
 
 		@Override
 		public boolean inputItemHasPriority(Object from) {
-			if (from instanceof ItemInput || from instanceof Ingredient || from instanceof ItemStack) {
+			if (from instanceof InputItem || from instanceof Ingredient || from instanceof ItemStack) {
 				return true;
 			}
 
