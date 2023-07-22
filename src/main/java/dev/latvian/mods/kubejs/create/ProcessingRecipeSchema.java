@@ -16,11 +16,16 @@ import dev.latvian.mods.kubejs.item.OutputItem;
 import dev.latvian.mods.kubejs.item.ingredient.TagContext;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
-import dev.latvian.mods.kubejs.recipe.component.*;
+import dev.latvian.mods.kubejs.recipe.component.BooleanComponent;
+import dev.latvian.mods.kubejs.recipe.component.FluidComponents;
+import dev.latvian.mods.kubejs.recipe.component.ItemComponents;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
+import dev.latvian.mods.kubejs.recipe.component.RecipeComponentWithParent;
+import dev.latvian.mods.kubejs.recipe.component.StringComponent;
+import dev.latvian.mods.kubejs.recipe.component.TimeComponent;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -101,7 +106,7 @@ public interface ProcessingRecipeSchema {
 
 		@Override
 		public boolean inputItemHasPriority(Object from) {
-			if (from instanceof ItemInput || from instanceof Ingredient || from instanceof ItemStack) {
+			if (from instanceof InputItem || from instanceof Ingredient || from instanceof ItemStack) {
 				return true;
 			}
 
