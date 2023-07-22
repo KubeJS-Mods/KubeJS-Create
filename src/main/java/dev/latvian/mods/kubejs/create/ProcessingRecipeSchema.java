@@ -7,17 +7,22 @@ import com.mojang.datafixers.util.Either;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+import com.simibubi.create.foundation.recipe.BlockTagIngredient;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.fluid.InputFluid;
 import dev.latvian.mods.kubejs.fluid.OutputFluid;
 import dev.latvian.mods.kubejs.item.InputItem;
 import dev.latvian.mods.kubejs.item.OutputItem;
+import dev.latvian.mods.kubejs.item.ingredient.TagContext;
 import dev.latvian.mods.kubejs.recipe.RecipeJS;
 import dev.latvian.mods.kubejs.recipe.RecipeKey;
 import dev.latvian.mods.kubejs.recipe.component.*;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 /**
  * @author LatvianModder
@@ -92,6 +97,20 @@ public interface ProcessingRecipeSchema {
 			} else {
 				return FluidIngredient.EMPTY.serialize();
 			}
+		}
+
+		@Override
+		public boolean inputItemHasPriority(Object from) {
+			if (from instanceof ItemInput || from instanceof Ingredient || from instanceof ItemStack) {
+				return true;
+			}
+
+			var input = readInputItem(from);
+			if (input.ingredient instanceof BlockTagIngredient blockTag) {
+				return !TagContext.INSTANCE.getValue().isEmpty(blockTag.getTag());
+			}
+
+			return !input.isEmpty();
 		}
 
 		@Override
