@@ -8,6 +8,7 @@ import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.recipe.BlockTagIngredient;
+import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.fluid.InputFluid;
 import dev.latvian.mods.kubejs.fluid.OutputFluid;
@@ -81,7 +82,7 @@ public interface ProcessingRecipeSchema {
 			} else if (from instanceof FluidIngredient fluid) {
 				return new CreateInputFluid(fluid);
 			} else if (from instanceof FluidStackJS fluid) {
-				return new CreateInputFluid(FluidIngredient.fromFluid(fluid.getFluid(), (int) fluid.kjs$getAmount()));
+				return new CreateInputFluid(FluidIngredientHelper.toFluidIngredient(fluid));
 			} else if (from instanceof FluidStack fluid) {
 				return new CreateInputFluid(FluidIngredient.fromFluidStack(fluid));
 			} else {
@@ -99,6 +100,8 @@ public interface ProcessingRecipeSchema {
 				return fluid.ingredient().serialize();
 			} else if (value instanceof FluidIngredient fluid) {
 				return fluid.serialize();
+			} else if (value instanceof FluidStackJS fluid) {
+				return FluidIngredientHelper.toFluidIngredient(fluid).serialize();
 			} else {
 				return FluidIngredient.EMPTY.serialize();
 			}
