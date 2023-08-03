@@ -30,7 +30,10 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 			AllRecipeTypes.DEPLOYING, ProcessingRecipeSchema.ITEM_APPLICATION,
 			AllRecipeTypes.ITEM_APPLICATION, ProcessingRecipeSchema.ITEM_APPLICATION,
 			AllRecipeTypes.MIXING, ProcessingRecipeSchema.PROCESSING_UNWRAPPED,
-			AllRecipeTypes.COMPACTING, ProcessingRecipeSchema.PROCESSING_UNWRAPPED
+			AllRecipeTypes.COMPACTING, ProcessingRecipeSchema.PROCESSING_UNWRAPPED,
+			AllRecipeTypes.CRUSHING, ProcessingRecipeSchema.PROCESSING_WITH_TIME,
+			AllRecipeTypes.CUTTING, ProcessingRecipeSchema.PROCESSING_WITH_TIME,
+			AllRecipeTypes.MILLING, ProcessingRecipeSchema.PROCESSING_WITH_TIME
 	);
 
 	@Override
