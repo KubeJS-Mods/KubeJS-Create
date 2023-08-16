@@ -4,6 +4,7 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
+import dev.latvian.mods.kubejs.create.custom.SandpaperItemBuilder;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.CreateEvents;
 import dev.latvian.mods.kubejs.create.events.SpecialFluidHandlerEvent;
@@ -39,6 +40,7 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 	@Override
 	public void init() {
 		RegistryInfo.ITEM.addType("create:sequenced_assembly", SequencedAssemblyItemBuilder.class, SequencedAssemblyItemBuilder::new);
+		RegistryInfo.ITEM.addType("create:sandpaper", SandpaperItemBuilder.class, SandpaperItemBuilder::new);
 	}
 
 	@Override
