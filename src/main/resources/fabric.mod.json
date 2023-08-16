@@ -22,5 +22,8 @@
 		"minecraft": ">=1.19.2",
 		"kubejs": ">=1902.6.1-build.300",
 		"create": "*"
-	}
+	},
+	"mixins": [
+		"kubejs-create.mixins.json"
+	]
 }
