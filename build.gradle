@@ -3,6 +3,7 @@ plugins {
 	id "io.github.juuxel.loom-vineflower" version "1.11.0"
 	id "maven-publish"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
+	id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
 apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
@@ -94,27 +95,8 @@ jar {
 }
 
 remapJar {
-	archiveBaseName.set "${rootProject.archives_base_name}-fabric"
-	archiveClassifier.set null
-}
-
-if (ENV.CURSEFORGE_KEY) {
-	curseforge {
-		apiKey = ENV.CURSEFORGE_KEY
-		project {
-			id = project.curseforge_id
-			releaseType = "${ENV.RELEASE_TYPE ?: 'release'}"
-			addGameVersion "Fabric"
-			addGameVersion "1.19.2"
-			mainArtifact(remapJar.archivePath)
-			relations {
-				requiredDependency 'kubejs'
-				requiredDependency 'create-fabric'
-			}
-			changelog = getGitChangelog
-			changelogType = 'markdown'
-		}
-	}
+    archiveBaseName.set "${rootProject.archives_base_name}-fabric"
+    archiveClassifier.set null
 }
 
 publishing {
@@ -135,6 +117,53 @@ publishing {
 				}
 			}
 		}
+
+		if (ENV.MAVEN_TOKEN) {
+			maven {
+				url "https://maven.latvian.dev/releases"
+				credentials {
+					username = "lat"
+					password = "${ENV.MAVEN_TOKEN}"
+				}
+			}
+		}
 	}
 }
 
+
+unifiedPublishing {
+	project {
+		releaseType = "${ENV.RELEASE_TYPE ?: 'release'}"
+		gameVersions = [
+				rootProject.minecraft_version
+		]
+		gameLoaders = ["forge"]
+		displayName = "$mod_name Forge $project.version"
+		changelog = getGitChangelog()
+		mainPublication remapJar
+
+		relations {
+			depends {
+				curseforge = modrinth = "kubejs"
+            }
+            depends {
+                curseforge = modrinth = "create-fabric"
+            }
+		}
+
+		if (ENV.CURSEFORGE_KEY) {
+			curseforge {
+				token = ENV.CURSEFORGE_KEY
+				id = project.curseforge_id
+			}
+		}
+
+		if (ENV.MODRINTH_TOKEN) {
+			modrinth {
+				token = ENV.MODRINTH_TOKEN
+				id = project.modrinth_id
+				version = "$project.version+$project.name"
+			}
+		}
+	}
+}
