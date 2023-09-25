@@ -61,4 +61,4 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           RELEASE_TYPE: ${{ inputs.release_type }}
         with:
-          arguments: curseforge --stacktrace --no-daemon
+          arguments: publishUnified --stacktrace --no-daemon
