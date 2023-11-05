@@ -161,7 +161,7 @@ unifiedPublishing {
 			modrinth {
 				token = ENV.MODRINTH_TOKEN
 				id = project.modrinth_id
-				version = "$project.version+$project.name"
+				version = "$project.version+fabric"
 			}
 		}
 	}
