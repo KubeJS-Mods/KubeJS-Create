@@ -136,8 +136,8 @@ unifiedPublishing {
 		gameVersions = [
 				rootProject.minecraft_version
 		]
-		gameLoaders = ["forge"]
-		displayName = "$mod_name Forge $project.version"
+		gameLoaders = ["fabric"]
+		displayName = "$mod_name Fabric $project.version"
 		changelog = getGitChangelog()
 		mainPublication remapJar
 
