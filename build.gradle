@@ -16,11 +16,24 @@ group = project.maven_group
 
 loom {
 	silentMojangMappingsLicense()
+
+	runs {
+		client {
+			if (ENV.MC_CLIENT_ARGS) {
+				programArgs ENV.MC_CLIENT_ARGS.split(' ')
+			}
+
+			vmArgs("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+		}
+	}
 }
 
 repositories {
 	maven {
-		url "https://maven.saps.dev/releases"
+		url "https://maven.latvian.dev/releases"
+		content {
+			includeGroup "dev.latvian.mods"
+		}
 	}
 
 	maven {
@@ -45,6 +58,14 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+
+	maven {
+		name 'JitPack'
+		url 'https://jitpack.io'
+		content {
+			includeGroupByRegex '(io|com)\\.github\\..*'
+		}
+	}
 }
 
 dependencies {
@@ -53,6 +74,7 @@ dependencies {
 
 	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 
+	implementation(annotationProcessor("io.github.llamalad7:mixinextras-forge:0.2.0"))
 	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
 	modApi("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") {
 		transitive = false // transitive jei and cc tweaked dependencies leaking through 😍
@@ -60,7 +82,7 @@ dependencies {
 	modApi "com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_version}"
 	modApi "com.tterrag.registrate:Registrate:${registrate_version}"
 
-	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4494410")
+	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4712868")
 }
 
 processResources {
@@ -141,10 +163,10 @@ unifiedPublishing {
 		relations {
 			depends {
 				curseforge = modrinth = "kubejs"
-            }
-            depends {
-                curseforge = modrinth = "create"
-            }                
+			}
+			depends {
+				curseforge = modrinth = "create"
+			}
 		}
 
 		if (ENV.CURSEFORGE_KEY) {

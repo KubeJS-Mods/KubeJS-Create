@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[40,)"
-issueTrackerURL = "https://kubejs.com/support?source=kubejs_create&mc=1902&loader=forge"
+issueTrackerURL = "https://kubejs.com/support?source=kubejs_create&mc=2001&loader=forge"
 license = "GNU LGPLv3"
 
 [[mods]]
@@ -16,7 +16,7 @@ license = "GNU LGPLv3"
 [[dependencies.kubejs_create]]
 modId = "kubejs"
 mandatory = true
-versionRange = "[1902.6.1-build.300,)"
+versionRange = "[2001.6.4-build.95,)"
 ordering = "AFTER"
 side = "BOTH"
 

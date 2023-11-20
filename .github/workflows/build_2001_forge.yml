@@ -1,12 +1,12 @@
-name: Java CI (1.19.2 Forge)
+name: Java CI (1.20.1 Forge)
 
 on:
   push:
     branches:
-      - '1902/forge'
+      - '2001/forge'
   workflow_dispatch:
     branches:
-      - '1902/forge'
+      - '2001/forge'
     inputs:
       release_type:
         description: 'Release Type'
