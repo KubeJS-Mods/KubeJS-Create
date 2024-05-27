@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.fluid.FluidLike;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.fluid.InputFluid;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
@@ -27,7 +27,7 @@ public record CreateInputFluid(FluidIngredient ingredient) implements InputFluid
 			var fs = in.getMatchingFluidStacks().get(0);
 			return FluidStackJS.of(fs.getFluid(), amount, fs.getTag() == null ? null : fs.getTag().copy());
 		} else if (ingredient instanceof FluidIngredient.FluidTagIngredient in && in.getRequiredAmount() != amount) {
-			var tag = TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(in.serialize().get("fluidTag").getAsString()));
+			var tag = TagKey.create(Registries.FLUID, new ResourceLocation(in.serialize().get("fluidTag").getAsString()));
 			return new CreateInputFluid(FluidIngredient.fromTag(tag, (int) amount));
 		}
 

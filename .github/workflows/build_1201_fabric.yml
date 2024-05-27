@@ -1,12 +1,12 @@
-name: Java CI (1.19.2 Fabric)
+name: Java CI (1.20.1 Fabric)
 
 on:
   push:
     branches:
-      - '1902/fabric'
+      - '2001/fabric'
   workflow_dispatch:
     branches:
-      - '1902/fabric'
+      - '2001/fabric'
     inputs:
       release_type:
         description: 'Release Type'

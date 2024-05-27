@@ -6,4 +6,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'KubeJS-Create-1.19.2-Fabric'
+rootProject.name = 'KubeJS-Create-1.20.1-Fabric'

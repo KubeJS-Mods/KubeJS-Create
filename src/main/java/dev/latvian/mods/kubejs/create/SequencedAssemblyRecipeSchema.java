@@ -1,6 +1,5 @@
 package dev.latvian.mods.kubejs.create;
 
-import com.mojang.datafixers.TypeRewriteRule;
 import com.simibubi.create.AllItems;
 import dev.latvian.mods.kubejs.item.InputItem;
 import dev.latvian.mods.kubejs.item.OutputItem;

@@ -20,7 +20,7 @@
 	},
 	"depends": {
 		"minecraft": ">=1.19.2",
-		"kubejs": ">=1902.6.1-build.300",
+		"kubejs": ">=2001.6.5-build.7",
 		"create": "*"
 	}
 }
