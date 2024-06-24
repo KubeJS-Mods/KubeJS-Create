@@ -7,6 +7,7 @@ import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.create.custom.SandpaperItemBuilder;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.CreateEvents;
+import dev.latvian.mods.kubejs.create.events.FanProcessingEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialFluidHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
@@ -53,6 +54,10 @@ public class KubeJSCreatePlugin extends KubeJSPlugin {
 		CreateEvents.BOILER_HEATER.post(ScriptType.STARTUP, new BoilerHeaterHandlerEvent());
 		CreateEvents.SPECIAL_FLUID.post(ScriptType.STARTUP, new SpecialFluidHandlerEvent());
 		CreateEvents.SPECIAL_SPOUT.post(ScriptType.STARTUP, new SpecialSpoutHandlerEvent());
+
+		FanProcessingEvent event = new FanProcessingEvent();
+		CreateEvents.FAN_PROCESSING.post(ScriptType.STARTUP, event);
+		event.register();
 	}
 
 	@Override
