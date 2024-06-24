@@ -3,6 +3,7 @@ package dev.latvian.mods.kubejs.create.events;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessingType;
 import com.simibubi.create.foundation.utility.VecHelper;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
+import dev.latvian.mods.kubejs.typings.Info;
 import dev.latvian.mods.rhino.mod.util.color.Color;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.core.BlockPos;
@@ -96,6 +97,7 @@ public class FanProcessingTypeJS implements FanProcessingType {
 		private BiConsumer<AirFlowParticleAccess, RandomSource> morphAirFlow = null;
 		private BiConsumer<Entity, Level> affectEntity = null;
 
+		@Info("Test if the block placed at the output of the fan is valid for this fan type.")
 		public Builder isValidAt(BlockStatePredicate predicate) {
 			return isValidAt((level, blockPos) -> predicate.test(level.getBlockState(blockPos)));
 		}
@@ -105,11 +107,13 @@ public class FanProcessingTypeJS implements FanProcessingType {
 			return this;
 		}
 
+		@Info("Priority determines which fan type will be used if there are multiple available.")
 		public Builder priority(int priority) {
 			this.priority = priority;
 			return this;
 		}
 
+		@Info("Test if the item can be processed by the fan type.")
 		public Builder canProcess(Ingredient ingredient) {
 			return canProcess(((itemStack, level) -> ingredient.test(itemStack)));
 		}
@@ -119,11 +123,13 @@ public class FanProcessingTypeJS implements FanProcessingType {
 			return this;
 		}
 
+		@Info("Processes the item, return a list of item stacks as the result.")
 		public Builder process(BiFunction<ItemStack, Level, List<ItemStack>> process) {
 			this.process = process;
 			return this;
 		}
 
+		@Info("Adds extra particles on items that are being processed.")
 		public Builder spawnProcessingParticles(float frequency, ParticleOptions particleType) {
 			return this.spawnProcessingParticles((level, vec3) -> {
 				if (level.random.nextFloat() > 1 / (frequency + 1)) {
@@ -142,6 +148,7 @@ public class FanProcessingTypeJS implements FanProcessingType {
 			return this;
 		}
 
+		@Info("Modify the airflow emitted by the fan, changing its color, transparency or particles spawned.")
 		public Builder morphAirFlow(Color color, float alpha, ParticleOptions particleOptions, float particleFrequency) {
 			return morphAirFlow((airFlowParticleAccess, randomSource) -> {
 				airFlowParticleAccess.setColor(color.getRgbJS());
@@ -157,6 +164,7 @@ public class FanProcessingTypeJS implements FanProcessingType {
 			return this;
 		}
 
+		@Info("Defines how the entity will be affected by the airflow.")
 		public Builder affectEntity(BiConsumer<Entity, Level> affectEntity) {
 			this.affectEntity = affectEntity;
 			return this;
