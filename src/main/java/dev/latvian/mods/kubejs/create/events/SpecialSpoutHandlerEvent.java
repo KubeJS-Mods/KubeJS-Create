@@ -1,6 +1,6 @@
 package dev.latvian.mods.kubejs.create.events;
 
-import com.simibubi.create.api.behaviour.BlockSpoutingBehaviour;
+import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
 import dev.latvian.mods.kubejs.event.EventJS;
@@ -18,6 +18,6 @@ public class SpecialSpoutHandlerEvent extends EventJS {
 	}
 
 	public void add(ResourceLocation path, BlockStatePredicate block, SpoutHandler handler) {
-		BlockSpoutingBehaviour.addCustomSpoutInteraction(path, FluidIngredientHelper.createSpoutingHandler(block, handler));
+		BlockSpoutingBehaviour.BY_BLOCK.registerProvider(FluidIngredientHelper.createSpoutingHandler(block, handler));
 	}
 }
