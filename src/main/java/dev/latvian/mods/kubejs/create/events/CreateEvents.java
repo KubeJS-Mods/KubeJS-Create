@@ -9,4 +9,5 @@ public interface CreateEvents {
 	EventHandler SPECIAL_FLUID = CreateEvents.GROUP.startup("pipeFluidEffect", () -> SpecialFluidHandlerEvent.class);
 	EventHandler SPECIAL_SPOUT = CreateEvents.GROUP.startup("spoutHandler", () -> SpecialSpoutHandlerEvent.class);
 	EventHandler BOILER_HEATER = CreateEvents.GROUP.startup("boilerHeatHandler", () -> BoilerHeaterHandlerEvent.class);
+	EventHandler FAN_PROCESSING = CreateEvents.GROUP.startup("fanProcessing", ()-> FanProcessingEvent.class);
 }
