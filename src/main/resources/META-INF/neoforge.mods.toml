@@ -1,22 +1,24 @@
 modLoader = "javafml"
-loaderVersion = "[40,)"
-issueTrackerURL = "https://kubejs.com/support?source=kubejs_create&mc=2001&loader=forge"
-license = "GNU LGPLv3"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://kubejs.com/support?source=kubejs_create&mc=2101&loader=neoforge"
+license = "MIT"
 
 [[mods]]
 modId = "kubejs_create"
 version = "${version}"
 displayName = "KubeJS Create"
-authors = "LatvianModder"
+authors = "latvian.dev"
 description = '''
 KubeJS Create integration
 '''
-license = "GNU LGPLv3"
+logoFile = "kubejs_create_logo.png"
+modUrl = "https://kubejs.com"
+displayURL = "https://kubejs.com"
 
 [[dependencies.kubejs_create]]
 modId = "kubejs"
 mandatory = true
-versionRange = "[2001.6.4-build.95,)"
+versionRange = "[${kubejs_version},)"
 ordering = "AFTER"
 side = "BOTH"
 
@@ -26,3 +28,6 @@ mandatory = true
 versionRange = "[6,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[mixins]]
+config = "kubejs_create.mixins.json"

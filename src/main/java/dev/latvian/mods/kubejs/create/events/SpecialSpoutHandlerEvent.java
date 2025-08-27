@@ -3,18 +3,15 @@ package dev.latvian.mods.kubejs.create.events;
 import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
-import dev.latvian.mods.kubejs.event.EventJS;
-import dev.latvian.mods.kubejs.fluid.FluidStackJS;
-import dev.latvian.mods.kubejs.level.BlockContainerJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
+import dev.latvian.mods.kubejs.level.LevelBlock;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.fluids.FluidStack;
 
-/**
- * @author Prunoideae
- */
-public class SpecialSpoutHandlerEvent extends EventJS {
+public class SpecialSpoutHandlerEvent implements KubeEvent {
 	@FunctionalInterface
 	public interface SpoutHandler {
-		long fillBlock(BlockContainerJS block, FluidStackJS fluid, boolean simulate);
+		long fillBlock(LevelBlock block, FluidStack fluid, boolean simulate);
 	}
 
 	public void add(ResourceLocation path, BlockStatePredicate block, SpoutHandler handler) {

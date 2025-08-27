@@ -1,0 +1,16 @@
+{
+	"parent": "shaped",
+	"keys": [
+		{
+			"name": "accept_mirrored",
+			"role": "other",
+			"type": "boolean",
+			"optional": true,
+			"always_write": true,
+			"function_names": ["acceptMirrored"]
+		}
+	],
+	"merge": {
+		"keys": true
+	}
+}

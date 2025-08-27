@@ -1,0 +1,15 @@
+{
+	"parent": "create:base/processing",
+	"keys": [
+		{
+			"name": "processing_time",
+			"role": "input",
+			"type": "ticks",
+			"optional": 100,
+			"always_write": true
+		}
+	],
+	"merge": {
+		"keys": true
+	}
+}

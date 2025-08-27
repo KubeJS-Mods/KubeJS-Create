@@ -1,0 +1,17 @@
+{
+	"minecraft": 2101,
+	"type": "neoforge",
+	"icon": "https://raw.githubusercontent.com/KubeJS-Mods/KubeJS-Create/main/src/main/resources/kubejs_create_logo.png",
+	"version": {
+		"file": "gradle.properties",
+		"pattern": "^mod_version=([\\w.]+)$",
+		"group": 1,
+		"format": "{version}-build.{run_number}"
+	},
+	"downloads": [
+		{
+			"name": "Download",
+			"url": "https://maven.latvian.dev/releases/dev/latvian/mods/kubejs-create-neoforge/{version}/kubejs-create-neoforge-{version}.jar"
+		}
+	]
+}

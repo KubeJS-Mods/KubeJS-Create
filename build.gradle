@@ -1,55 +1,119 @@
+import java.time.Instant
+
 plugins {
-	id "dev.architectury.loom" version "1.9-SNAPSHOT"
-	id "maven-publish"
+	id 'base'
+	id 'java'
+	id 'idea'
+	id 'maven-publish'
+	id 'net.neoforged.moddev' version "2.0.107"
 	id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
-apply from: 'https://files.latvian.dev/public/markdown-git-changelog.gradle'
+ext.ENV = System.getenv()
+def isLocal = !ENV.containsKey("GITHUB_RUN_NUMBER")
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
-
-def ENV = System.getenv()
-version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: '9999'}"
-archivesBaseName = "${project.archives_base_name}-forge"
+version = "${mod_version}-${isLocal ? "local.${Instant.now().epochSecond}" : "build.${ENV.GITHUB_RUN_NUMBER}"}"
 group = project.maven_group
+base.archivesBaseName = project.archives_base_name
 
-loom {
-	silentMojangMappingsLicense()
+neoForge {
+	version = project.neoforge_version
 
 	runs {
-		client {
-			if (ENV.MC_CLIENT_ARGS) {
-				programArgs ENV.MC_CLIENT_ARGS.split(' ')
-			}
-
-			programArg("-mixin.config=create.mixins.json")
-			vmArgs("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+		configureEach {
+			logLevel = org.slf4j.event.Level.INFO
 		}
-		server {
-			if (ENV.MC_SERVER_ARGS) {
-				programArgs ENV.MC_SERVER_ARGS.split(' ')
+
+		client {
+			ideName = 'Client'
+			client()
+			systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+
+			if (ENV.MC_CLIENT_ARGS) {
+				programArguments.addAll(ENV.MC_CLIENT_ARGS.split(' '))
 			}
 
-			programArg("-mixin.config=create.mixins.json")
-			vmArgs("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+			jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+			gameDirectory = file 'runs/client'
+		}
+
+		server {
+			ideName = 'Server'
+			server()
+			programArgument("--nogui")
+			gameDirectory = file 'runs/server'
+		}
+	}
+
+	mods {
+		kubejs_create {
+			sourceSet sourceSets.main
 		}
 	}
 }
 
+compileJava {
+	options.encoding = "UTF-8"
+	options.release.set(21)
+	options.compilerArgs << '-parameters' << '-Xmaxerrs' << '1000'
+}
+
+java {
+	sourceCompatibility = targetCompatibility = '21'
+	withSourcesJar()
+}
+
 repositories {
+	mavenLocal()
+	mavenCentral()
+
+	maven {
+		url "https://maven.neoforged.net/releases"
+	}
+
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+		content {
+			includeGroup "org.parchmentmc.data"
+		}
+	}
+
 	maven {
 		url "https://maven.latvian.dev/releases"
 		content {
 			includeGroup "dev.latvian.mods"
+			includeGroup "dev.latvian.apps"
+		}
+	}
+
+	maven {
+		name 'JitPack'
+		url 'https://jitpack.io'
+		content {
+			includeGroupByRegex '(io|com)\\.github\\..*'
+		}
+	}
+
+	maven {
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+
+		content {
+			includeGroup "fuzs.forgeconfigapiport"
 		}
 	}
 
 	maven {
 		url = "https://maven.createmod.net"
+		content {
+			includeGroup "com.simibubi.create"
+			includeGroup "net.createmod.ponder"
+			includeGroup "dev.engine-room.flywheel"
+		}
 	}
 
 	maven {
-		url "https://maven.tterrag.com/"
+		url "https://mvn.devos.one/snapshots"
 		content {
 			includeGroup "com.tterrag.registrate"
 		}
@@ -68,53 +132,35 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
-
-	maven {
-		name 'JitPack'
-		url 'https://jitpack.io'
-		content {
-			includeGroupByRegex '(io|com)\\.github\\..*'
-		}
-	}
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-	mappings loom.officialMojangMappings()
+	api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+	interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
 
-	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-
-	implementation(annotationProcessor("io.github.llamalad7:mixinextras-forge:0.4.1"))
-	modApi "dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}"
-	modApi("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_version}:slim") {
-		transitive = false // transitive jei and cc tweaked dependencies leaking through 😍
-	}
-	modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
-	modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
-	modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-	modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
-
-
-	modLocalRuntime modCompileOnly("curse.maven:jei-238222:6075247")
+	implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+	implementation("com.simibubi.create:create-$minecraft_version:$create_version:slim") { transitive = false }
+	implementation("net.createmod.ponder:Ponder-NeoForge-$minecraft_version:$ponder_version")
+	compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-$minecraft_version:$flywheel_version")
+	runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-$minecraft_version:$flywheel_version")
 }
 
 processResources {
-	inputs.property "version", project.version
+	def toReplace = [
+			"version"       : project.version,
+			"kubejs_version": project.kubejs_version,
+			"create_version": project.create_version,
+	]
 
-	filesMatching("META-INF/mods.toml") {
-		expand "version": project.version
+	println("[Process Resources] Replacing properties in resources: " + toReplace)
+
+	inputs.properties toReplace
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand toReplace
 	}
-}
-
-java {
-	withSourcesJar()
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}" }
-	}
-
 	manifest {
 		attributes([
 				"Specification-Title"     : project.mod_id,
@@ -126,52 +172,38 @@ jar {
 				"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
 	}
-
-	archiveClassifier.set "dev"
 }
 
 publishing {
 	publications {
-		mavenForge(MavenPublication) {
-			artifactId = rootProject.archivesBaseName
+		mavenNeoForge(MavenPublication) {
+			artifactId = archives_base_name
 			from components.java
 		}
 	}
 
 	repositories {
-		if (ENV.SAPS_TOKEN) {
+		if (ENV.MAVEN_URL && ENV.MAVEN_USERNAME && ENV.MAVEN_TOKEN) {
 			maven {
-				url "https://maven.saps.dev/minecraft"
+				url = ENV.MAVEN_URL
 				credentials {
-					username = "latvian"
-					password = "${ENV.SAPS_TOKEN}"
-				}
-			}
-		}
-
-		if (ENV.MAVEN_TOKEN) {
-			maven {
-				url "https://maven.latvian.dev/releases"
-				credentials {
-					username = "lat"
-					password = "${ENV.MAVEN_TOKEN}"
+					username = ENV.MAVEN_USERNAME
+					password = ENV.MAVEN_TOKEN
 				}
 			}
 		}
 	}
 }
 
-
 unifiedPublishing {
 	project {
 		releaseType = "${ENV.RELEASE_TYPE ?: 'release'}"
-		gameVersions = [
-				rootProject.minecraft_version
-		]
-		gameLoaders = ["forge"]
-		displayName = "$mod_name Forge $project.version"
-		changelog = getGitChangelog()
-		mainPublication remapJar
+		gameVersions = Arrays.asList(rootProject.supported_versions.split(', '))
+		gameLoaders = ["neoforge"]
+		version = project.version
+		displayName = "$mod_name NeoForge $project.version"
+		changelog = "https://github.com/KubeJS-Mods/KubeJS-Create/commits/main/"
+		mainPublication jar
 
 		relations {
 			depends {
@@ -193,7 +225,41 @@ unifiedPublishing {
 			modrinth {
 				token = ENV.MODRINTH_TOKEN
 				id = project.modrinth_id
-				version = "$project.version+forge"
+				version = "$project.version+$project.name"
+			}
+		}
+	}
+}
+
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+
+		["client", "server"].each {
+			[
+					".architectury-transformer",
+					"config",
+					"crash-reports",
+					"debug",
+					"downloads",
+					"dumps",
+					"flashback",
+					"local",
+					"logs",
+					"mods",
+					"pack-sync",
+					"profilekeys",
+					"saves",
+					"command_history.txt",
+					"options.txt",
+					"server.properties",
+					"world",
+					"emi.json",
+					"usercache.json",
+					"usernamecache.json"
+			].each { ext ->
+				excludeDirs.add(file("runs/$it/$ext"))
 			}
 		}
 	}

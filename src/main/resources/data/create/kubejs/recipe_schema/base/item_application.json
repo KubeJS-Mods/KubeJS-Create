@@ -1,0 +1,23 @@
+{
+	"parent": "create:base/processing",
+	"keys": [
+		{
+			"name": "keep_held_item",
+			"role": "other",
+			"type": "boolean",
+			"optional": false,
+			"excluded": true
+		}
+	],
+	"merge": {
+		"keys": true,
+		"functions": true
+	},
+	"functions": {
+		"keepHeldItem": {
+			"type": "set",
+			"key": "keep_held_item",
+			"value": true
+		}
+	}
+}

@@ -20,7 +20,7 @@ logs
 
 # other
 eclipse
-run
+/runs
 .vscode
 
 # night config dependency override my beloved

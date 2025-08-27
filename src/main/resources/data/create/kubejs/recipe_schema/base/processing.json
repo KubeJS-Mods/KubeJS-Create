@@ -1,0 +1,59 @@
+{
+	"keys": [
+		{
+			"name": "results",
+			"role": "output",
+			"type": {
+				"type": "list",
+				"component": {
+					"type": "either",
+					"left": "fluid_stack",
+					"right": "create:processing_output"
+				}
+			}
+		},
+		{
+			"name": "ingredients",
+			"role": "input",
+			"type": {
+				"type": "list",
+				"component": {
+					"type": "either",
+					"left": "create:fluid_ingredient",
+					"right": "ingredient"
+				},
+				"spread": {
+					"type": "either",
+					"left": "ignore",
+					"right": "sized_ingredient"
+				}
+			}
+		},
+		{
+			"name": "processing_time",
+			"role": "input",
+			"type": "ticks",
+			"optional": 100
+		},
+		{
+			"name": "heat_requirement",
+			"role": "input",
+			"type": "create:heat_condition",
+			"optional": "none",
+			"excluded": true
+		}
+	],
+	"unique": ["results"],
+	"functions": {
+		"heated": {
+			"type": "set",
+			"key": "heat_requirement",
+			"value": "heated"
+		},
+		"superheated": {
+			"type": "set",
+			"key": "heat_requirement",
+			"value": "superheated"
+		}
+	}
+}

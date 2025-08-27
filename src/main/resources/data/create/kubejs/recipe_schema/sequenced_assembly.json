@@ -1,0 +1,43 @@
+{
+	"keys": [
+		{
+			"name": "results",
+			"role": "output",
+			"type": {
+				"type": "list",
+				"component": "create:processing_output"
+			}
+		},
+		{
+			"name": "ingredient",
+			"role": "input",
+			"type": "ingredient"
+		},
+		{
+			"name": "sequence",
+			"role": "other",
+			"type": {
+				"type": "list",
+				"component": "nested_recipe"
+			}
+		},
+		{
+			"name": "transitional_item",
+			"role": "output",
+			"type": "create:processing_output",
+			"optional": {
+				"id": "create:incomplete_precision_mechanism"
+			}
+		},
+		{
+			"name": "loops",
+			"role": "other",
+			"type": {
+				"type": "int",
+				"min": 0
+			},
+			"optional": 5
+		}
+	],
+	"unique": ["results"]
+}
