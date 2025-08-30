@@ -15,13 +15,16 @@ import dev.latvian.mods.kubejs.create.recipe.CreateRecipeComponents;
 import dev.latvian.mods.kubejs.create.recipe.ProcessingOutputRecipeComponent;
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
+import dev.latvian.mods.kubejs.plugin.builtin.wrapper.ItemWrapper;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentTypeRegistry;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaRegistry;
 import dev.latvian.mods.kubejs.registry.BuilderTypeRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
+import dev.latvian.mods.rhino.Context;
 import net.minecraft.core.registries.Registries;
+import org.jetbrains.annotations.Nullable;
 
 public class KubeJSCreatePlugin implements KubeJSPlugin {
 	@Override
@@ -52,6 +55,16 @@ public class KubeJSCreatePlugin implements KubeJSPlugin {
 	@Override
 	public void registerTypeWrappers(TypeWrapperRegistry registry) {
 		registry.register(FluidIngredient.class, FluidIngredientHelper::wrap);
+		registry.register(ProcessingOutput.class, KubeJSCreatePlugin::wrapProcessingOutput);
+	}
+
+	private static ProcessingOutput wrapProcessingOutput(Context cx, @Nullable Object from) {
+		if (from instanceof ProcessingOutput p) {
+			return p;
+		}
+
+		var stack = ItemWrapper.wrap(cx, from);
+		return stack.isEmpty() ? ProcessingOutput.EMPTY : new ProcessingOutput(stack, 1F);
 	}
 
 	@Override

@@ -4,14 +4,13 @@ import com.mojang.serialization.Codec;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
-import dev.latvian.mods.kubejs.recipe.KubeRecipe;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.kubejs.recipe.component.UniqueIdBuilder;
+import dev.latvian.mods.kubejs.recipe.filter.RecipeMatchContext;
 import dev.latvian.mods.kubejs.recipe.match.FluidMatch;
 import dev.latvian.mods.kubejs.recipe.match.ReplacementMatchInfo;
 import dev.latvian.mods.kubejs.util.OpsContainer;
-import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.type.TypeInfo;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -37,18 +36,18 @@ public class CreateFluidIngredientRecipeComponent implements RecipeComponent<Flu
 	}
 
 	@Override
-	public boolean hasPriority(Context cx, KubeRecipe recipe, Object from) {
+	public boolean hasPriority(RecipeMatchContext cx, Object from) {
 		return from instanceof SizedFluidIngredient || from instanceof FluidIngredient || from instanceof FluidStack || from instanceof Fluid;
 	}
 
 	@Override
-	public boolean matches(Context cx, KubeRecipe recipe, FluidIngredient value, ReplacementMatchInfo match) {
+	public boolean matches(RecipeMatchContext cx, FluidIngredient value, ReplacementMatchInfo match) {
 		return match.match() instanceof FluidMatch m && m.matches(cx, FluidIngredientHelper.convert(value), match.exact());
 	}
 
 	@Override
 	public boolean isEmpty(FluidIngredient value) {
-		return value == FluidIngredient.EMPTY;
+		return value.getRequiredAmount() <= 0;
 	}
 
 	@Override
