@@ -46,7 +46,7 @@ neoForge {
 	}
 
 	mods {
-		kubejs_create {
+		mod {
 			sourceSet sourceSets.main
 		}
 	}
@@ -202,7 +202,7 @@ unifiedPublishing {
 		gameLoaders = ["neoforge"]
 		version = project.version
 		displayName = "$mod_name NeoForge $project.version"
-		changelog = "https://github.com/KubeJS-Mods/KubeJS-Create/commits/main/"
+		changelog = "https://github.com/KubeJS-Mods/KubeJS-Create/commits/main"
 		mainPublication jar
 
 		relations {
