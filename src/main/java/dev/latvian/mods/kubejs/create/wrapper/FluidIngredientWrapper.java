@@ -1,4 +1,4 @@
-package dev.latvian.mods.kubejs.create.platform;
+package dev.latvian.mods.kubejs.create.wrapper;
 
 import com.mojang.serialization.DataResult;
 import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;
@@ -36,20 +36,20 @@ import java.util.Set;
 import static com.mojang.serialization.DataResult.error;
 import static com.mojang.serialization.DataResult.success;
 
-public class FluidIngredientHelper {
-	public static FluidIngredient toFluidIngredient(FluidStack fluidStack) {
+public interface FluidIngredientWrapper {
+	static FluidIngredient toFluidIngredient(FluidStack fluidStack) {
 		return FluidIngredient.fromFluidStack(fluidStack);
 	}
 
-	public static FluidIngredient toFluidIngredient(TagKey<Fluid> tag) {
+	static FluidIngredient toFluidIngredient(TagKey<Fluid> tag) {
 		return FluidIngredient.fromTag(tag, FluidType.BUCKET_VOLUME);
 	}
 
-	public static FluidIngredient toFluidIngredient(Fluid fluid) {
+	static FluidIngredient toFluidIngredient(Fluid fluid) {
 		return FluidIngredient.fromFluid(fluid, FluidType.BUCKET_VOLUME);
 	}
 
-	public static DataResult<FluidIngredient> convert(SizedFluidIngredient neoIn) {
+	static DataResult<FluidIngredient> fromNeo(SizedFluidIngredient neoIn) {
 		return switch (neoIn.ingredient()) {
 			case SingleFluidIngredient single -> success(FluidIngredient.fromFluid(single.fluid().value(), neoIn.amount()));
 			case TagFluidIngredient tag -> success(FluidIngredient.fromTag(tag.tag(), neoIn.amount()));
@@ -68,11 +68,11 @@ public class FluidIngredientHelper {
 		};
 	}
 
-	public static net.neoforged.neoforge.fluids.crafting.FluidIngredient convert(FluidIngredient fluidIngredient) {
+	static net.neoforged.neoforge.fluids.crafting.FluidIngredient toNeo(FluidIngredient fluidIngredient) {
 		return EmptyFluidIngredient.INSTANCE;
 	}
 
-	public static SimpleRegistry.Provider<Fluid, OpenPipeEffectHandler> createEffectHandler(FluidIngredient fluidIngredient, SpecialFluidHandlerEvent.PipeHandler handler) {
+	static SimpleRegistry.Provider<Fluid, OpenPipeEffectHandler> createEffectHandler(FluidIngredient fluidIngredient, SpecialFluidHandlerEvent.PipeHandler handler) {
 		return new SimpleRegistry.Provider<>() {
 			final FluidIngredient filter = fluidIngredient;
 			Set<Fluid> validFluids = null;
@@ -121,7 +121,7 @@ public class FluidIngredientHelper {
 		};
 	}
 
-	public static SimpleRegistry.Provider<Block, BlockSpoutingBehaviour> createSpoutingHandler(BlockStatePredicate block, SpecialSpoutHandlerEvent.SpoutHandler handler) {
+	static SimpleRegistry.Provider<Block, BlockSpoutingBehaviour> createSpoutingHandler(BlockStatePredicate block, SpecialSpoutHandlerEvent.SpoutHandler handler) {
 		final BlockSpoutingBehaviour internalHandler = (world, pos, spout, availableFluid, simulate) -> {
 			if (!block.test(world.getBlockState(pos))) {
 				return 0;
@@ -133,16 +133,16 @@ public class FluidIngredientHelper {
 		return blockIn -> block.testBlock(blockIn) ? internalHandler : null;
 	}
 
-	public static FluidIngredient wrap(Context cx, Object o) {
+	static FluidIngredient wrap(Context cx, Object o) {
 		return (switch (o) {
 			case FluidIngredient id -> success(id);
 			case FluidStack stack -> success(toFluidIngredient(stack));
 			case TagKey<?> tag -> success(toFluidIngredient(FluidTags.create(tag.location())));
 			case Fluid fluid -> success(toFluidIngredient(fluid));
-			case SizedFluidIngredient neoIn -> convert(neoIn);
-			case net.neoforged.neoforge.fluids.crafting.FluidIngredient neoIn -> convert(new SizedFluidIngredient(neoIn, FluidType.BUCKET_VOLUME));
+			case SizedFluidIngredient neoIn -> fromNeo(neoIn);
+			case net.neoforged.neoforge.fluids.crafting.FluidIngredient neoIn -> fromNeo(new SizedFluidIngredient(neoIn, FluidType.BUCKET_VOLUME));
 			case Map<?, ?> map when map.containsKey("type") -> FluidIngredient.CODEC.parse(RegistryAccessContainer.of(cx).java(), map);
-			default -> convert(FluidWrapper.wrapSizedIngredient(cx, o));
+			default -> fromNeo(FluidWrapper.wrapSizedIngredient(cx, o));
 		}).getOrThrow(msg -> new KubeRuntimeException("Failed to parse Create FluidIngredient: " + msg).source(SourceLine.of(cx)));
 	}
 }

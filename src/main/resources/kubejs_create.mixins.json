@@ -4,7 +4,8 @@
 	"package": "dev.latvian.mods.kubejs.create.core.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"FluidTagIngredientMixin"
+		"FluidTagIngredientMixin",
+		"ProcessingOutputMixin"
 	],
 	"client": [
 	],

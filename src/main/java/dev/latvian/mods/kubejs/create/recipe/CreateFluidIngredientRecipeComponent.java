@@ -3,7 +3,7 @@ package dev.latvian.mods.kubejs.create.recipe;
 import com.mojang.serialization.Codec;
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
+import dev.latvian.mods.kubejs.create.wrapper.FluidIngredientWrapper;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.kubejs.recipe.component.UniqueIdBuilder;
@@ -42,7 +42,7 @@ public class CreateFluidIngredientRecipeComponent implements RecipeComponent<Flu
 
 	@Override
 	public boolean matches(RecipeMatchContext cx, FluidIngredient value, ReplacementMatchInfo match) {
-		return match.match() instanceof FluidMatch m && m.matches(cx, FluidIngredientHelper.convert(value), match.exact());
+		return match.match() instanceof FluidMatch m && m.matches(cx, FluidIngredientWrapper.toNeo(value), match.exact());
 	}
 
 	@Override

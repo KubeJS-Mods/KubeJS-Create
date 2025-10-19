@@ -2,7 +2,7 @@ package dev.latvian.mods.kubejs.create.events;
 
 import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
-import dev.latvian.mods.kubejs.create.platform.FluidIngredientHelper;
+import dev.latvian.mods.kubejs.create.wrapper.FluidIngredientWrapper;
 import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.level.LevelBlock;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +15,6 @@ public class SpecialSpoutHandlerEvent implements KubeEvent {
 	}
 
 	public void add(ResourceLocation path, BlockStatePredicate block, SpoutHandler handler) {
-		BlockSpoutingBehaviour.BY_BLOCK.registerProvider(FluidIngredientHelper.createSpoutingHandler(block, handler));
+		BlockSpoutingBehaviour.BY_BLOCK.registerProvider(FluidIngredientWrapper.createSpoutingHandler(block, handler));
 	}
 }
