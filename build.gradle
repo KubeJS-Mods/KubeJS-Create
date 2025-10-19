@@ -88,6 +88,13 @@ repositories {
 	}
 
 	maven {
+		url "https://maven.blamejared.com"
+		content {
+			includeGroup "mezz.jei"
+		}
+	}
+
+	maven {
 		name 'JitPack'
 		url 'https://jitpack.io'
 		content {
@@ -143,6 +150,8 @@ dependencies {
 	implementation("net.createmod.ponder:Ponder-NeoForge-$minecraft_version:$ponder_version")
 	compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-$minecraft_version:$flywheel_version")
 	runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-$minecraft_version:$flywheel_version")
+
+	runtimeOnly("mezz.jei:jei-1.21.1-neoforge:$jei_version")
 }
 
 processResources {
