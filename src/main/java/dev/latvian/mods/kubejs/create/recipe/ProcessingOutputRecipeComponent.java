@@ -2,7 +2,9 @@ package dev.latvian.mods.kubejs.create.recipe;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
+import dev.latvian.mods.kubejs.create.wrapper.KubeCreateOutput;
 import dev.latvian.mods.kubejs.plugin.builtin.wrapper.ItemWrapper;
+import dev.latvian.mods.kubejs.recipe.RecipeScriptContext;
 import dev.latvian.mods.kubejs.recipe.component.RecipeComponentType;
 import dev.latvian.mods.kubejs.recipe.component.SimpleRecipeComponent;
 import dev.latvian.mods.kubejs.recipe.component.UniqueIdBuilder;
@@ -10,6 +12,7 @@ import dev.latvian.mods.kubejs.recipe.filter.RecipeMatchContext;
 import dev.latvian.mods.kubejs.recipe.match.ItemMatch;
 import dev.latvian.mods.kubejs.recipe.match.ReplacementMatchInfo;
 import dev.latvian.mods.rhino.type.TypeInfo;
+import net.minecraft.world.item.ItemStack;
 
 public class ProcessingOutputRecipeComponent extends SimpleRecipeComponent<ProcessingOutput> {
 	public static final TypeInfo TYPE_INFO = TypeInfo.of(ProcessingOutput.class);
@@ -27,6 +30,28 @@ public class ProcessingOutputRecipeComponent extends SimpleRecipeComponent<Proce
 	@Override
 	public boolean matches(RecipeMatchContext cx, ProcessingOutput value, ReplacementMatchInfo match) {
 		return match.match() instanceof ItemMatch m && m.matches(cx, value.getStack(), match.exact());
+	}
+
+	@Override
+	public ProcessingOutput replace(RecipeScriptContext cx, ProcessingOutput original, ReplacementMatchInfo match, Object with) {
+		if (matches(cx, original, match)) {
+			return switch (with) {
+				case ProcessingOutput output -> output;
+				case ItemStack stack -> new ProcessingOutput(stack, original.getChance());
+				default -> {
+					var output = KubeCreateOutput.wrapProcessingOutput(cx.cx(), with);
+
+					if (output != ProcessingOutput.EMPTY &&
+						!(ItemStack.isSameItemSameComponents(output.getStack(), original.getStack()))) {
+						yield new ProcessingOutput(output.getStack(), original.getChance());
+					}
+
+					yield original;
+				}
+			};
+		}
+
+		return original;
 	}
 
 	@Override
