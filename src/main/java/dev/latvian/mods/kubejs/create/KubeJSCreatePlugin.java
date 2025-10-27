@@ -2,17 +2,14 @@ package dev.latvian.mods.kubejs.create;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.CreateEvents;
 import dev.latvian.mods.kubejs.create.events.SpecialFluidHandlerEvent;
 import dev.latvian.mods.kubejs.create.events.SpecialSpoutHandlerEvent;
 import dev.latvian.mods.kubejs.create.item.SandpaperItemBuilder;
 import dev.latvian.mods.kubejs.create.item.SequencedAssemblyItemBuilder;
-import dev.latvian.mods.kubejs.create.recipe.CreateFluidIngredientRecipeComponent;
 import dev.latvian.mods.kubejs.create.recipe.CreateRecipeComponents;
 import dev.latvian.mods.kubejs.create.recipe.ProcessingOutputRecipeComponent;
-import dev.latvian.mods.kubejs.create.wrapper.FluidIngredientWrapper;
 import dev.latvian.mods.kubejs.create.wrapper.KubeCreateOutput;
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
@@ -54,7 +51,6 @@ public class KubeJSCreatePlugin implements KubeJSPlugin {
 
 	@Override
 	public void registerTypeWrappers(TypeWrapperRegistry registry) {
-		registry.register(FluidIngredient.class, FluidIngredientWrapper::wrap);
 		registry.register(ProcessingOutput.class, KubeCreateOutput::wrapProcessingOutput);
 	}
 
@@ -78,7 +74,7 @@ public class KubeJSCreatePlugin implements KubeJSPlugin {
 	@Override
 	public void registerRecipeComponents(RecipeComponentTypeRegistry registry) {
 		registry.register(ProcessingOutputRecipeComponent.TYPE);
-		registry.register(CreateFluidIngredientRecipeComponent.TYPE);
+		registry.register(CreateRecipeComponents.SIZED_FLUID_INGREDIENT);
 		registry.register(CreateRecipeComponents.HEAT_CONDITION);
 	}
 }

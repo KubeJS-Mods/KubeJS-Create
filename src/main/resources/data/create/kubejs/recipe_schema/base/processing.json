@@ -19,7 +19,7 @@
 				"type": "list",
 				"component": {
 					"type": "either",
-					"left": "create:fluid_ingredient",
+					"left": "create:sized_fluid_ingredient",
 					"right": "ingredient"
 				},
 				"spread": {

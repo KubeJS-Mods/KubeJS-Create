@@ -25,7 +25,7 @@ side = "BOTH"
 [[dependencies.kubejs_create]]
 modId = "create"
 mandatory = true
-versionRange = "[6,)"
+versionRange = "[6.0.7,)"
 ordering = "AFTER"
 side = "BOTH"
 
