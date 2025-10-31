@@ -19,7 +19,7 @@ public class ProcessingOutputRecipeComponent extends SimpleRecipeComponent<Proce
 	public static final RecipeComponentType<ProcessingOutput> TYPE = RecipeComponentType.unit(Create.asResource("processing_output"), ProcessingOutputRecipeComponent::new);
 
 	public ProcessingOutputRecipeComponent(RecipeComponentType<?> type) {
-		super(type, ProcessingOutput.CODEC, TYPE_INFO);
+		super(type, ProcessingOutput.CODEC_NEW, TYPE_INFO);
 	}
 
 	@Override
