@@ -11,7 +11,7 @@
 	"downloads": [
 		{
 			"name": "Download",
-			"url": "https://maven.latvian.dev/releases/dev/latvian/mods/kubejs-create-neoforge/{version}/kubejs-create-neoforge-{version}.jar"
+			"url": "https://maven.latvian.dev/releases/dev/latvian/mods/kubejs-create/{version}/kubejs-create-neoforge-{version}.jar"
 		}
 	]
 }
