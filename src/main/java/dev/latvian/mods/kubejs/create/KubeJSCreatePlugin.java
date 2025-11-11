@@ -1,5 +1,6 @@
 package dev.latvian.mods.kubejs.create;
 
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import dev.latvian.mods.kubejs.create.events.BoilerHeaterHandlerEvent;
@@ -17,9 +18,15 @@ import dev.latvian.mods.kubejs.recipe.component.RecipeComponentTypeRegistry;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchemaRegistry;
 import dev.latvian.mods.kubejs.registry.BuilderTypeRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
+import dev.latvian.mods.kubejs.script.DataComponentTypeInfoRegistry;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
+import dev.latvian.mods.rhino.type.TypeInfo;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 
 public class KubeJSCreatePlugin implements KubeJSPlugin {
 	@Override
@@ -76,5 +83,24 @@ public class KubeJSCreatePlugin implements KubeJSPlugin {
 		registry.register(ProcessingOutputRecipeComponent.TYPE);
 		registry.register(CreateRecipeComponents.SIZED_FLUID_INGREDIENT);
 		registry.register(CreateRecipeComponents.HEAT_CONDITION);
+	}
+
+	@Override
+	public void registerDataComponentTypeDescriptions(DataComponentTypeInfoRegistry registry) {
+		try {
+			for (var field : AllDataComponents.class.getDeclaredFields()) {
+				if (field.getType() == DataComponentType.class
+					&& Modifier.isPublic(field.getModifiers())
+					&& Modifier.isStatic(field.getModifiers())
+					&& field.getGenericType() instanceof ParameterizedType t
+				) {
+					var key = (DataComponentType) field.get(null);
+					var typeInfo = TypeInfo.of(t.getActualTypeArguments()[0]);
+					registry.register(key, typeInfo);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 }
