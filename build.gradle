@@ -40,6 +40,7 @@ repositories {
 		url "https://maven.tterrag.com/"
 		content {
 			includeGroup "com.jozufozu.flywheel"
+			includeGroup "com.tterrag.registrate_fabric"
 		}
 	}
 
@@ -76,8 +77,24 @@ dependencies {
 	modApi("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
 	modApi("net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}")
 
-	modApi ":kubejs-fabric-${rootProject.kubejs_version}"
-	modApi ":create-fabric-${rootProject.create_version}"
+	// Architectury API - cross-platform compatibility layer
+	modApi("dev.architectury:architectury-fabric:9.2.14")
+
+	// Rhino - JavaScript engine used by KubeJS
+	modApi("dev.latvian.mods:rhino-fabric:2001.2.3-build.10")
+
+	// KubeJS from maven.saps.dev
+	modApi("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
+
+	// Porting-Lib modules (same as Create uses) - provides FluidStack and other forge-like APIs
+	modApi("io.github.fabricators_of_create.Porting-Lib:transfer:2.3.13+1.20.1")
+	modApi("io.github.fabricators_of_create.Porting-Lib:base:2.3.13+1.20.1")
+
+	// Create from local libs directory (copied from WOWID3/mods for proper compilation)
+	modApi(name: "create-fabric-6.0.8.0+build.1734-mc1.20.1", ext: "jar")
+
+	// Registrate - for ItemEntry support (compileOnly since Create includes it)
+	modCompileOnly("com.tterrag.registrate_fabric:Registrate:1.3.79-MC1.20.1")
 
 	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4494409")
 }

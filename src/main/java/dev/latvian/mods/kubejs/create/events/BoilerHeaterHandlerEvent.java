@@ -1,6 +1,6 @@
 package dev.latvian.mods.kubejs.create.events;
 
-import com.simibubi.create.content.fluids.tank.BoilerHeaters;
+import com.simibubi.create.api.boiler.BoilerHeater;
 import dev.latvian.mods.kubejs.block.state.BlockStatePredicate;
 import dev.latvian.mods.kubejs.create.platform.BoilerHeaterHelper;
 import dev.latvian.mods.kubejs.event.EventJS;
@@ -18,6 +18,15 @@ public class BoilerHeaterHandlerEvent extends EventJS {
 	}
 
 	public void addAdvanced(BlockStatePredicate block, BoilerHeaterCallback onUpdate) {
-		BoilerHeaters.registerHeaterProvider(((level, blockPos, blockState) -> block.test(blockState) ? (l, b, bs) -> onUpdate.updateHeat(l.kjs$getBlock(b)) : null));
+		BoilerHeater.REGISTRY.registerProvider(key -> {
+			// Check if any blockstate of this block matches our predicate
+			for (var state : key.getStateDefinition().getPossibleStates()) {
+				if (block.test(state)) {
+					// Return a BoilerHeater that calls our callback
+					return (level, pos, blockState) -> onUpdate.updateHeat(level.kjs$getBlock(pos));
+				}
+			}
+			return null;
+		});
 	}
 }

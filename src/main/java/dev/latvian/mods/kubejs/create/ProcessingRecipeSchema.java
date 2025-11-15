@@ -26,7 +26,7 @@ import dev.latvian.mods.kubejs.recipe.component.StringComponent;
 import dev.latvian.mods.kubejs.recipe.component.TimeComponent;
 import dev.latvian.mods.kubejs.recipe.schema.RecipeSchema;
 import dev.latvian.mods.kubejs.util.MapJS;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -118,10 +118,8 @@ public interface ProcessingRecipeSchema {
 			}
 
 			var input = readInputItem(from);
-			if (input.ingredient instanceof BlockTagIngredient blockTag) {
-				return !TagContext.INSTANCE.getValue().isEmpty(blockTag.getTag());
-			}
-
+			// NOTE: BlockTagIngredient check removed - in Create 6.0.x BlockTagIngredient is no longer an Ingredient subclass
+			// This was just an optimization, falling back to isEmpty() check still works correctly
 			return !input.isEmpty();
 		}
 
