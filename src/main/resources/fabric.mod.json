@@ -10,7 +10,7 @@
 	],
 	"contact": {
 		"sources": "https://github.com/KubeJS-Mods/KubeJS-Create",
-		"issues": "https://kubejs.com/support?source=kubejs_create&mc=1902&loader=fabric"
+		"issues": "https://kubejs.com/support?source=kubejs_create&mc=2001&loader=fabric"
 	},
 	"license": "GNU LGPLv3",
 	"entrypoints": {
@@ -19,8 +19,8 @@
 		]
 	},
 	"depends": {
-		"minecraft": ">=1.19.2",
-		"kubejs": ">=1902.6.1-build.300",
-		"create": "*"
+		"minecraft": ">=1.20.1 <1.21",
+		"kubejs": ">=2001.6.5-build.16",
+		"create": ">=6.0.8"
 	}
 }

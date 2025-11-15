@@ -1,13 +1,13 @@
 plugins {
-	id "dev.architectury.loom" version "1.3-SNAPSHOT"
-	id "io.github.juuxel.loom-vineflower" version "1.11.0"
+	id "dev.architectury.loom" version "1.9-SNAPSHOT"
 	id "maven-publish"
 	id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
-apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
+// apply from: 'https://files.latmod.com/public/markdown-git-changelog.gradle'
+// Commented out due to network issues - handle changelog manually
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '17'
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '21'
 
 def ENV = System.getenv()
 version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: '9999'}"
@@ -19,6 +19,11 @@ loom {
 }
 
 repositories {
+	// Local libs directory for mods with version string issues
+	flatDir {
+		dirs 'libs'
+	}
+
 	maven {
 		url "https://maven.saps.dev/releases"
 	}
@@ -71,8 +76,8 @@ dependencies {
 	modApi("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
 	modApi("net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}")
 
-	modApi "dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}"
-	modApi "com.simibubi.create:create-fabric-${rootProject.minecraft_version}:${rootProject.create_version}"
+	modApi ":kubejs-fabric-${rootProject.kubejs_version}"
+	modApi ":create-fabric-${rootProject.create_version}"
 
 	modLocalRuntime modCompileOnly("curse.maven:jei-238222:4494409")
 }
@@ -138,7 +143,7 @@ unifiedPublishing {
 		]
 		gameLoaders = ["fabric"]
 		displayName = "$mod_name Fabric $project.version"
-		changelog = getGitChangelog()
+		changelog = "See GitHub for full changelog"
 		mainPublication remapJar
 
 		relations {
